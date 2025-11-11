@@ -39,7 +39,7 @@
     .card-body{padding:14px}
     .product-img{height:190px;background:#ddd center/cover no-repeat;position:relative}
     .badge{position:absolute;top:10px;right:10px;background:var(--accent);color:#fff;border-radius:999px;padding:4px 10px;font-size:.75rem}
-    .price{font-weight:800;color:var(--secondary);margin:8px 0}
+    .price{font-weight:800;color:#0d1b7a;margin:8px 0}
     .actions{display:flex;gap:10px}
     .filters{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 20px}
     .filters select,.filters input{padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff}
@@ -218,10 +218,13 @@
   }
   window.addEventListener('hashchange',()=> showSection((location.hash||'#home').replace('#','')));
 
-  // -------- Load DATA from products.json (new schema) --------
+  // Ensure a default route on first load
+  if(!location.hash){ location.hash = "#home"; }
+
+  // -------- Load DATA from products.json (categories own products) --------
   let STORE = { logo:'', categories:{} };
   fetch('products.json')
-    .then(r=>r.json())
+    .then(r=>{ if(!r.ok) throw new Error("products.json not found"); return r.json(); })
     .then(data=>{
       STORE = data;
       applyLogo();
@@ -233,7 +236,7 @@
     })
     .catch(err=>{
       console.error('Failed to load products.json', err);
-      document.getElementById('productsContainer').innerHTML = '<p style="color:#d32f2f">Failed to load products.json</p>';
+      document.getElementById('productsContainer').innerHTML = '<p style="color:#d32f2f">Failed to load products.json. Place it next to index.html.</p>';
     });
 
   function applyLogo(){
@@ -245,7 +248,7 @@
   function flattenProducts(){
     const merged = [];
     Object.entries(STORE.categories).forEach(([key, meta])=>{
-      if(key==='kits') return; // handled separately
+      if(key==='kits') return; // kits shown separately
       (meta.products||[]).forEach(p=> merged.push({...p, category:key}));
     });
     return merged;
@@ -336,7 +339,6 @@
   let cart=[]; const cartCount=document.getElementById('cartCount');
   function bindAdd(){ document.querySelectorAll('.add').forEach(b=>b.onclick=(e)=>{
     const id=e.currentTarget.dataset.id;
-    // search in all category products, including kits
     let prod=null;
     for(const [key, meta] of Object.entries(STORE.categories)){
       const found = (meta.products||[]).find(p=>String(p.id)===String(id));
@@ -381,7 +383,7 @@
   function refreshSummary(){
     const list=document.getElementById('summaryItems'); if(!list) return;
     list.innerHTML=''; if(cart.length===0){ list.innerHTML='<p>No items.</p>'; return;}
-    cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justify-content='space-between'; row.style.margin='6px 0'; row.innerHTML=`<span>${i.name} × ${i.qty}</span><strong>₹${(i.price*i.qty).toLocaleString('en-IN')}</strong>`; list.appendChild(row); });
+    cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.margin='6px 0'; row.innerHTML=`<span>${i.name} × ${i.qty}</span><strong>₹${(i.price*i.qty).toLocaleString('en-IN')}</strong>`; list.appendChild(row); });
     const sub=subtotal(), ch=computeCharge(cDelivery.value, cPayment.value, sub);
     document.getElementById('sum2Subtotal').textContent='₹'+sub.toLocaleString('en-IN');
     document.getElementById('sum2Charge').textContent='₹'+ch.toLocaleString('en-IN');

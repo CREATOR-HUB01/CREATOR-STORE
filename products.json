@@ -1,0 +1,159 @@
+{
+  "categories": {
+    "microcontrollers": {
+      "label": "Microcontrollers",
+      "img": "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=1200&auto=format&fit=crop"
+    },
+    "sensors": {
+      "label": "Sensors",
+      "img": "https://images.unsplash.com/photo-1603732551681-2e91159b9dc2?q=80&w=1200&auto=format&fit=crop"
+    },
+    "development_boards": {
+      "label": "Development Boards",
+      "img": "https://images.unsplash.com/photo-1558618666-fcd25856cd63?q=80&w=1200&auto=format&fit=crop"
+    },
+    "active": {
+      "label": "Active Components",
+      "img": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop"
+    },
+    "passive": {
+      "label": "Passive Components",
+      "img": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1200&auto=format&fit=crop"
+    },
+    "power": {
+      "label": "Power Components",
+      "img": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1200&auto=format&fit=crop"
+    },
+    "tools": {
+      "label": "Tools",
+      "img": "https://images.unsplash.com/photo-1504148455329-4ff0802cfb7e?q=80&w=1200&auto=format&fit=crop"
+    },
+    "modules": {
+      "label": "Communication Modules",
+      "img": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+    }
+  },
+  "products": [
+    {
+      "id": 1,
+      "name": "Arduino UNO R3 (Original)",
+      "price": 1799,
+      "category": "microcontrollers",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/3/38/Arduino_Uno_-_R3.jpg",
+      "badge": "Bestseller"
+    },
+    {
+      "id": 2,
+      "name": "ESP32 DevKit V1 (WROOM-32)",
+      "price": 349,
+      "category": "development_boards",
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25856cd63?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 3,
+      "name": "STM32F103C8T6 Blue Pill",
+      "price": 279,
+      "category": "development_boards",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 4,
+      "name": "DHT22 Temperature & Humidity Sensor",
+      "price": 190,
+      "category": "sensors",
+      "image": "https://images.unsplash.com/photo-1603732551681-2e91159b9dc2?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 5,
+      "name": "HC-05 Bluetooth Module",
+      "price": 220,
+      "category": "modules",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 6,
+      "name": "NRF24L01+ 2.4GHz",
+      "price": 120,
+      "category": "modules",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 7,
+      "name": "L298N Motor Driver",
+      "price": 149,
+      "category": "active",
+      "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 8,
+      "name": "A4988 Stepper Driver",
+      "price": 89,
+      "category": "active",
+      "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 9,
+      "name": "Resistor Kit (1/4W, 1% 600pcs)",
+      "price": 129,
+      "category": "passive",
+      "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 10,
+      "name": "Capacitor Assortment 120pcs",
+      "price": 149,
+      "category": "passive",
+      "image": "https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 11,
+      "name": "LM7805 Voltage Regulator",
+      "price": 25,
+      "category": "power",
+      "image": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 12,
+      "name": "DC-DC Buck Converter (LM2596)",
+      "price": 99,
+      "category": "power",
+      "image": "https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 13,
+      "name": "Soldering Iron 60W",
+      "price": 299,
+      "category": "tools",
+      "image": "https://images.unsplash.com/photo-1504148455329-4ff0802cfb7e?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 14,
+      "name": "Digital Multimeter",
+      "price": 499,
+      "category": "tools",
+      "image": "https://images.unsplash.com/photo-1504148455329-4ff0802cfb7e?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      "id": 15,
+      "name": "Arduino Nano (Clone)",
+      "price": 249,
+      "category": "microcontrollers",
+      "image": "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=1200&auto=format&fit=crop"
+    }
+  ],
+  "kits": [
+    {
+      "id": "k1",
+      "name": "Line Follower Robot Kit",
+      "price": 1299,
+      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop",
+      "badge": "Popular"
+    },
+    {
+      "id": "k2",
+      "name": "Smart Home Starter Kit",
+      "price": 1899,
+      "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop"
+    }
+  ]
+}

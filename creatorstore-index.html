@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Creator Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    :root{--primary:#1a237e;--secondary:#283593;--accent:#ff7f00;--dark:#0e1338;--muted:#6b7280;--border:#e5e7eb;--shadow:0 6px 18px rgba(0,0,0,.08)}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f6f7fb;color:#111827}
+    .container{width:92%;max-width:1200px;margin:0 auto}
+    header{position:sticky;top:0;z-index:50;background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+    .header-content{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .logo{display:flex;gap:10px;align-items:center;font-weight:800}
+    nav ul{list-style:none;display:flex;gap:16px;margin:0;padding:0}
+    nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px}
+    nav a:hover, nav a.active{background:rgba(255,255,255,.12)}
+    .search-box{display:flex;background:#fff;border-radius:10px;overflow:hidden}
+    .search-box input{border:none;outline:none;padding:10px 12px;width:220px}
+    .search-box button{border:none;background:var(--secondary);color:#fff;padding:10px 12px;cursor:pointer}
+    .cart-chip{display:flex;align-items:center;gap:8px;background:#fff;color:#111;border-radius:999px;padding:8px 12px;text-decoration:none}
+    .chip-count{background:var(--accent);color:#fff;border-radius:999px;font-size:.75rem;padding:2px 8px}
+    section{padding:44px 0}
+    .hero{background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1400&auto=format&fit=crop') center/cover;color:#fff;text-align:center;padding:90px 0}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:0;background:var(--secondary);color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;cursor:pointer;text-decoration:none}
+    .btn-outline{background:#fff;color:var(--secondary);border:1px solid var(--secondary)}
+    .btn-accent{background:var(--accent)}
+    .section-title{text-align:center;margin:10px 0 24px;font-size:1.6rem;color:#0e1338}
+    .grid{display:grid;gap:18px}
+    .grid.categories{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .grid.products{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+    .card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+    .card-img{height:160px;background:#ddd center/cover no-repeat}
+    .card-body{padding:14px}
+    .product-img{height:190px;background:#ddd center/cover no-repeat;position:relative}
+    .badge{position:absolute;top:10px;right:10px;background:var(--accent);color:#fff;border-radius:999px;padding:4px 10px;font-size:.75rem}
+    .price{font-weight:800;color:var(--secondary);margin:8px 0}
+    .actions{display:flex;gap:10px}
+    .filters{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 20px}
+    .filters select,.filters input{padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff}
+    .cart-wrap{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+    .table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .table th,.table td{padding:12px 14px;border-bottom:1px solid var(--border);text-align:left}
+    .table th{background:#f3f4f6;font-weight:700}
+    .qty-control{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+    .qty-control button{padding:6px 10px;border:0;background:#fff;cursor:pointer}
+    .qty-control input{width:56px;border:0;text-align:center;padding:6px 0}
+    .summary{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);position:sticky;top:88px;height:max-content}
+    .summary .row{display:flex;justify-content:space-between;margin:6px 0;color:#374151}
+    .summary .total{border-top:1px dashed var(--border);margin-top:8px;padding-top:8px;font-weight:800;font-size:1.1rem;color:#0e1338}
+    .empty{background:#fff;border:1px dashed var(--border);border-radius:12px;padding:22px;text-align:center}
+    .form{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .fg{margin-bottom:12px}
+    .fg label{display:block;font-weight:600;margin-bottom:6px}
+    .fg input,.fg textarea,.fg select{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px}
+    .error{color:#d32f2f;font-size:.85rem;margin-top:4px}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:#f3f4f6;padding:6px 10px;border-radius:999px;font-size:.9rem;margin:4px 6px 0 0}
+    footer{background:var(--dark);color:#c7d2fe;padding:46px 0 14px}
+    .footer-grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .footer-grid a{color:#c7d2fe;text-decoration:none}
+    .copyright{text-align:center;border-top:1px solid rgba(255,255,255,.2);margin-top:18px;padding-top:12px;color:#a5b4fc}
+    @media (max-width:900px){.cart-wrap{grid-template-columns:1fr} .row2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <div class="logo"><i class="fa-solid fa-microchip"></i> Creator Store</div>
+      <nav>
+        <ul>
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#products" class="nav-link">Products</a></li>
+          <li><a href="#categories" class="nav-link">Categories</a></li>
+          <li><a href="#kits" class="nav-link">Kits</a></li>
+          <li><a href="#cart" class="nav-link">Cart</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions" style="display:flex;align-items:center;gap:14px">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search components...">
+          <button id="searchBtn"><i class="fa-solid fa-search"></i></button>
+        </div>
+        <a href="#cart" class="cart-chip" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span>Cart</span><span class="chip-count" id="cartCount">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sections -->
+  <section id="home" class="hero">
+    <div class="container">
+      <h1 style="font-size:2.4rem;margin-bottom:8px">Premium Electronic Components</h1>
+      <p>Shop microcontrollers, sensors, dev boards, active & passive components, tools, power, and ready-to-use kits.</p>
+      <a href="#products" class="btn btn-accent">Shop Now</a>
+    </div>
+  </section>
+
+  <section id="categories"><div class="container"><h2 class="section-title">Product Categories</h2><div class="grid categories" id="categoryGrid"></div></div></section>
+
+  <section id="products">
+    <div class="container">
+      <h2 class="section-title">Products</h2>
+      <div class="filters">
+        <select id="categoryFilter"><option value="all">All Categories</option></select>
+        <input id="minPrice" type="number" min="0" placeholder="Min ₹">
+        <input id="maxPrice" type="number" min="0" placeholder="Max ₹">
+        <button class="btn" id="applyFilters">Apply Filters</button>
+        <button class="btn btn-outline" id="clearFilters">Clear</button>
+      </div>
+      <div class="grid products" id="productsContainer"></div>
+    </div>
+  </section>
+
+  <section id="kits"><div class="container"><h2 class="section-title">DIY Kits</h2><div class="grid products" id="kitsContainer"></div></div></section>
+  <section id="about"><div class="container"><h2 class="section-title">About</h2><p>Creator Store has supplied high-quality electronic components since 2010.</p></div></section>
+  <section id="contact"><div class="container"><h2 class="section-title">Contact</h2><p>support@creatorstore.com</p></div></section>
+
+  <section id="cart">
+    <div class="container">
+      <h2 class="section-title">Your Cart</h2>
+      <div class="cart-wrap">
+        <div>
+          <table class="table" id="cartTable">
+            <thead><tr><th>Product</th><th>Price</th><th style="width:180px">Quantity</th><th>Total</th><th></th></tr></thead>
+            <tbody id="cartBody"><tr><td colspan="5" class="empty">Your cart is empty.</td></tr></tbody>
+          </table>
+        </div>
+        <aside class="summary">
+          <div class="row"><span>Subtotal</span><strong id="sumSubtotal">₹0</strong></div>
+          <div class="row"><span>Current Charge</span><strong id="sumCharge">₹0</strong></div>
+          <div class="row total"><span>Grand Total</span><strong id="sumTotal">₹0</strong></div>
+          <div style="margin-top:10px;display:flex;gap:10px">
+            <a href="#products" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Continue Shopping</a>
+            <a href="#checkout" class="btn btn-accent" id="goCheckout">Checkout</a>
+          </div>
+          <div style="margin-top:10px;color:var(--muted);font-size:.9rem">Shipping/Payment charges are applied during checkout based on your selections.</div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="checkout">
+    <div class="container">
+      <h2 class="section-title">Checkout</h2>
+      <div class="row2">
+        <form id="checkoutForm" class="form">
+          <div class="fg"><label>Full Name *</label><input id="cName" required><div class="error" id="eName"></div></div>
+          <div class="fg"><label>Email *</label><input id="cEmail" type="email" required><div class="error" id="eEmail"></div></div>
+          <div class="fg"><label>Phone (10 digits) *</label><input id="cPhone" inputmode="numeric" maxlength="10" required><div class="error" id="ePhone"></div></div>
+          <div class="fg"><label>Address *</label><textarea id="cAddress" rows="4" required></textarea><div class="error" id="eAddress"></div></div>
+          <div class="fg"><label>Delivery Method *</label><select id="cDelivery"><option value="delivery">Shipping (Delivery)</option><option value="pickup">Store Pickup</option></select></div>
+          <div class="fg"><label>Payment Method *</label><select id="cPayment"><option value="online">Online</option><option value="cod">Cash on Delivery (COD)</option></select></div>
+          <div class="pill">COD+Delivery → ₹80. Online+Delivery → ₹50 if subtotal &lt; ₹1500, else ₹0. Pickup → ₹0.</div>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <a href="#cart" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Back to Cart</a>
+            <button type="submit" class="btn btn-accent" id="proceedToPay">Proceed to Pay</button>
+          </div>
+        </form>
+        <div class="form" id="orderSummary">
+          <h3 style="margin:0 0 8px">Order Summary</h3>
+          <div id="summaryItems"></div>
+          <div style="border-top:1px dashed var(--border);margin-top:10px;padding-top:8px">
+            <div class="row"><span>Items Subtotal</span><strong id="sum2Subtotal">₹0</strong></div>
+            <div class="row"><span>Shipping/COD</span><strong id="sum2Charge">₹0</strong></div>
+            <div class="row total"><span>Grand Total</span><strong id="sum2Total">₹0</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="order-complete">
+    <div class="container">
+      <div class="form">
+        <h2 style="margin-top:0"><i class="fa-solid fa-circle-check" style="color:#2e7d32"></i> Order Complete</h2>
+        <p id="ocText">Thank you! Your order has been placed.</p>
+        <div id="ocItems" style="margin:10px 0"></div>
+        <div style="border-top:1px dashed var(--border);padding-top:8px" class="row">
+          <div class="row" style="justify-content:space-between"><span>Total Paid</span><strong id="ocTotal">₹0</strong></div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <button class="btn" id="downloadInvoice"><i class="fa-solid fa-file-arrow-down"></i> Download Invoice</button>
+          <a href="#home" class="btn btn-outline"><i class="fa-solid fa-house"></i> Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div><h3>Creator Store</h3><p>Your trusted source for high-quality electronic components since 2010.</p></div>
+        <div><h3>Quick Links</h3><ul><li><a href="#home">Home</a></li><li><a href="#products">Products</a></li><li><a href="#categories">Categories</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul></div>
+        <div><h3>Customer Service</h3><ul><li><a href="#shipping-policy">Shipping Policy</a></li><li><a href="#return-policy">Return Policy</a></li><li><a href="#faq">FAQ</a></li><li><a href="#terms">Terms & Conditions</a></li><li><a href="#privacy">Privacy Policy</a></li></ul></div>
+        <div><h3>Contact</h3><ul><li>123 Tech Street, Bangalore</li><li>+91 98765 43210</li><li>support@creatorstore.com</li></ul></div>
+      </div>
+      <div class="copyright">&copy; <span id="year"></span> Creator Store. All rights reserved.</div>
+    </div>
+  </footer>
+
+<script>
+  const { jsPDF } = window.jspdf;
+  const sections = ['home','products','categories','kits','about','contact','cart','checkout','order-complete','shipping-policy','return-policy','faq','terms','privacy'];
+  function showSection(id){
+    if(!sections.includes(id)) id='home';
+    sections.forEach(s=>{ const el=document.getElementById(s); if(!el) return; el.style.display = (s===id)?'':'none'; });
+    document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active', a.getAttribute('href')===`#${id}`));
+    window.scrollTo({top:0,behavior:'smooth'});
+    if(id==='cart') updateCartUI();
+    if(id==='checkout') refreshSummary();
+  }
+  window.addEventListener('hashchange',()=> showSection((location.hash||'#home').replace('#','')));
+
+  // -------- Load DATA from products.json --------
+  let STORE = { categories:{}, products:[], kits:[] };
+  fetch('products.json')
+    .then(r=>r.json())
+    .then(data=>{
+      STORE = data;
+      buildCategories();
+      buildFilters();
+      renderProducts(STORE.products);
+      renderKits(STORE.kits);
+    })
+    .catch(err=>{
+      console.error('Failed to load products.json', err);
+      document.getElementById('productsContainer').innerHTML = '<p style="color:#d32f2f">Failed to load products.json</p>';
+    });
+
+  // -------- Categories --------
+  function buildCategories(){
+    const categoryGrid=document.getElementById('categoryGrid');
+    categoryGrid.innerHTML='';
+    Object.entries(STORE.categories).forEach(([key, meta])=>{
+      const d=document.createElement('div'); d.className='card';
+      d.innerHTML = `<div class="card-img" style="background-image:url('${meta.img||''}')"></div>
+        <div class="card-body"><h3>${meta.label||key}</h3><p>Explore ${meta.label?.toLowerCase()||key} (${STORE.products.filter(p=>p.category===key).length} items)</p></div>`;
+      d.addEventListener('click',()=>{ document.getElementById('categoryFilter').value = key; location.hash='#products'; applyAllFilters(); });
+      categoryGrid.appendChild(d);
+    });
+  }
+
+  // -------- Products & Kits rendering --------
+  const productsContainer=document.getElementById('productsContainer');
+  function renderProducts(list){
+    productsContainer.innerHTML='';
+    if(list.length===0){ productsContainer.innerHTML='<p>No products found.</p>'; return; }
+    list.forEach(p=>{
+      const c=document.createElement('div'); c.className='card';
+      const badge = p.badge?`<span class="badge">${p.badge}</span>`:'';
+      c.innerHTML = `
+        <div class="product-img" style="background-image:url('${p.image||''}')">${badge}</div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p style="color:#374151">${p.description||'Product'}</p>
+          <div class="price">₹${(+p.price||0).toLocaleString('en-IN')}</div>
+          <div class="actions"><button class="btn add" data-id="${p.id}"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button></div>
+        </div>`;
+      productsContainer.appendChild(c);
+    });
+    bindAdd();
+  }
+
+  const kitsContainer=document.getElementById('kitsContainer');
+  function renderKits(list){
+    kitsContainer.innerHTML='';
+    list.forEach(p=>{
+      const c=document.createElement('div'); c.className='card';
+      c.innerHTML = `
+        <div class="product-img" style="background-image:url('${p.image||''}')">${p.badge?`<span class="badge">${p.badge}</span>`:''}</div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p>${p.description||'All-in-one kit with components.'}</p>
+          <div class="price">₹${(+p.price||0).toLocaleString('en-IN')}</div>
+          <div class="actions"><button class="btn add" data-id="${p.id}"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button></div>
+        </div>`;
+      kitsContainer.appendChild(c);
+    });
+    bindAdd();
+  }
+
+  // -------- Filters & Search --------
+  const categoryFilter=document.getElementById('categoryFilter');
+  function buildFilters(){
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+    Object.entries(STORE.categories).forEach(([k,meta])=>{
+      const o=document.createElement('option'); o.value=k; o.textContent=meta.label || k; categoryFilter.appendChild(o);
+    });
+  }
+  const minPrice=document.getElementById('minPrice'), maxPrice=document.getElementById('maxPrice'), searchInput=document.getElementById('searchInput');
+  document.getElementById('applyFilters').addEventListener('click', ()=>{ location.hash='#products'; applyAllFilters(); });
+  document.getElementById('clearFilters').addEventListener('click', ()=>{ categoryFilter.value='all'; minPrice.value=''; maxPrice.value=''; searchInput.value=''; location.hash='#products'; renderProducts(STORE.products); });
+  document.getElementById('searchBtn').addEventListener('click', ()=>{ location.hash='#products'; applyAllFilters(); });
+  searchInput.addEventListener('keyup',(e)=>{ if(e.key==='Enter'){ location.hash='#products'; applyAllFilters(); } });
+  function applyAllFilters(){
+    const cat=categoryFilter.value, q=(searchInput.value||'').toLowerCase().trim(), lo=Number(minPrice.value)||0, hi=Number(maxPrice.value)||999999;
+    const list = STORE.products.filter(p => (cat==='all'||p.category===cat) && (+p.price)>=lo && (+p.price)<=hi && (q==='' || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+    renderProducts(list);
+  }
+
+  // -------- Cart / Checkout / Invoice --------
+  let cart=[]; const cartCount=document.getElementById('cartCount');
+  function bindAdd(){ document.querySelectorAll('.add').forEach(b=>b.onclick=(e)=>{ const id=e.currentTarget.dataset.id; const prod = STORE.products.find(p=>String(p.id)===String(id)) || STORE.kits.find(k=>String(k.id)===String(id)); const ex=cart.find(i=>String(i.id)===String(id)); if(ex){ ex.qty+=1; } else { cart.push({id:prod.id, name:prod.name, price:+prod.price, image:prod.image, qty:1}); } updateCartUI(); toast(`${prod.name} added to cart`); }); }
+  function toast(msg){ const n=document.createElement('div'); n.style.cssText="position:fixed;top:90px;right:20px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);z-index:1000"; n.textContent=msg; document.body.appendChild(n); setTimeout(()=>{n.style.opacity='0'; n.style.transition='all .3s'; setTimeout(()=>n.remove(),300)},1700); }
+  function subtotal(){ return cart.reduce((t,i)=>t+i.price*i.qty,0); }
+  function updateCartUI(){
+    const body=document.getElementById('cartBody'); if(!body) return;
+    body.innerHTML='';
+    if(cart.length===0){ body.innerHTML='<tr><td colspan="5" class="empty">Your cart is empty.</td></tr>'; }
+    let sub=0; cart.forEach(item=>{ sub+=item.price*item.qty; const tr=document.createElement('tr'); tr.innerHTML=`<td style="display:flex;align-items:center;gap:10px"><div style="width:64px;height:64px;background:url('${item.image||''}') center/cover;border-radius:8px"></div><div>${item.name}</div></td><td>₹${item.price.toLocaleString('en-IN')}</td><td><div class="qty-control"><button class="q" data-id="${item.id}" data-d="-1">-</button><input class="qi" data-id="${item.id}" type="number" min="1" value="${item.qty}"><button class="q" data-id="${item.id}" data-d="1">+</button></div></td><td>₹${(item.price*item.qty).toLocaleString('en-IN')}</td><td><button class="btn btn-outline rem" data-id="${item.id}"><i class="fa-solid fa-trash"></i></button></td>`; body.appendChild(tr); });
+    cartCount.textContent = cart.reduce((t,i)=>t+i.qty,0);
+    document.getElementById('sumSubtotal').textContent='₹'+sub.toLocaleString('en-IN');
+    document.getElementById('sumCharge').textContent='₹0';
+    document.getElementById('sumTotal').textContent='₹'+sub.toLocaleString('en-IN');
+    body.querySelectorAll('.q').forEach(b=>b.onclick=(e)=>{ const id=e.currentTarget.dataset.id, d=+e.currentTarget.dataset.d; const it=cart.find(i=>String(i.id)===String(id)); if(!it) return; it.qty+=d; if(it.qty<=0){ cart=cart.filter(i=>String(i.id)!==String(id)); } updateCartUI(); });
+    body.querySelectorAll('.qi').forEach(inp=>inp.onchange=(e)=>{ const id=e.currentTarget.dataset.id, n=Math.max(1,parseInt(e.currentTarget.value||'1',10)); const it=cart.find(i=>String(i.id)===String(id)); it.qty=n; updateCartUI(); });
+    body.querySelectorAll('.rem').forEach(btn=>btn.onclick=(e)=>{ const id=e.currentTarget.dataset.id; cart=cart.filter(i=>String(i.id)!==String(id)); updateCartUI(); });
+  }
+
+  // Pricing rules
+  function computeCharge(delivery, payment, sub){ if(delivery==='pickup') return 0; if(payment==='cod') return 80; return (sub<1500)?50:0; }
+
+  // Checkout
+  const cName=document.getElementById('cName'), cEmail=document.getElementById('cEmail'), cPhone=document.getElementById('cPhone'), cAddress=document.getElementById('cAddress');
+  const cDelivery=document.getElementById('cDelivery'), cPayment=document.getElementById('cPayment');
+  const eName=document.getElementById('eName'), eEmail=document.getElementById('eEmail'), ePhone=document.getElementById('ePhone'), eAddress=document.getElementById('eAddress');
+  function validateForm(){
+    let ok=true; eName.textContent=eEmail.textContent=ePhone.textContent=eAddress.textContent=''; [cName,cEmail,cPhone,cAddress].forEach(el=>el.style.borderColor='var(--border)');
+    if(!cName.value.trim()){ eName.textContent='Please enter your full name.'; cName.style.borderColor='#d32f2f'; ok=false; }
+    if(!cEmail.value.trim() || !/^\S+@\S+\.\S+$/.test(cEmail.value)){ eEmail.textContent='Enter a valid email address.'; cEmail.style.borderColor='#d32f2f'; ok=false; }
+    if(!/^\d{10}$/.test(cPhone.value.trim())){ ePhone.textContent='Enter a valid 10-digit phone number.'; cPhone.style.borderColor='#d32f2f'; ok=false; }
+    if(!cAddress.value.trim()){ eAddress.textContent='Please enter your address.'; cAddress.style.borderColor='#d32f2f'; ok=false; }
+    return ok;
+  }
+  function refreshSummary(){
+    const list=document.getElementById('summaryItems'); if(!list) return;
+    list.innerHTML=''; if(cart.length===0){ list.innerHTML='<p>No items.</p>'; return;}
+    cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.margin='6px 0'; row.innerHTML=`<span>${i.name} × ${i.qty}</span><strong>₹${(i.price*i.qty).toLocaleString('en-IN')}</strong>`; list.appendChild(row); });
+    const sub=subtotal(), ch=computeCharge(cDelivery.value, cPayment.value, sub);
+    document.getElementById('sum2Subtotal').textContent='₹'+sub.toLocaleString('en-IN');
+    document.getElementById('sum2Charge').textContent='₹'+ch.toLocaleString('en-IN');
+    document.getElementById('sum2Total').textContent='₹'+(sub+ch).toLocaleString('en-IN');
+  }
+  document.getElementById('checkoutForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    if(!validateForm()) return;
+    const sub=subtotal(), charge=computeCharge(cDelivery.value, cPayment.value, sub), grand=sub+charge;
+    if(cPayment.value==='cod'){ onPaymentSuccess({method:'COD', amount:grand}); }
+    else {
+      const options={ key:"rzp_test_REPLACE_WITH_YOUR_KEY", amount:grand*100, currency:"INR", name:"Creator Store", description:"Order Payment", prefill:{name:cName.value,email:cEmail.value,contact:cPhone.value}, notes:{delivery:cDelivery.value}, handler:function (resp){ onPaymentSuccess({method:'Online', amount:grand, payment_id:resp.razorpay_payment_id}); }};
+      const rzp=new Razorpay(options); rzp.open();
+    }
+  });
+
+  // Order complete + invoice
+  function onPaymentSuccess({method, amount, payment_id}){
+    location.hash='#order-complete';
+    document.getElementById('ocText').innerHTML = method==='COD' ? `Your COD order has been placed. Please keep ₹${amount.toLocaleString('en-IN')} ready.` : `Payment successful${payment_id?` (ID: ${payment_id})`:''}. Your order has been placed.`;
+    const items=document.getElementById('ocItems'); items.innerHTML=''; cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.alignItems='center'; row.style.gap='10px'; row.style.margin='6px 0'; row.innerHTML=`<div style="width:56px;height:56px;background:url('${i.image||''}') center/cover;border-radius:8px"></div><div style="flex:1">${i.name} × ${i.qty}</div><strong>₹${(i.price*i.qty).toLocaleString('en-IN')}</strong>`; items.appendChild(row); });
+    document.getElementById('ocTotal').textContent='₹'+amount.toLocaleString('en-IN');
+    document.getElementById('downloadInvoice').onclick=()=>generateInvoice(method, amount, payment_id);
+  }
+  function generateInvoice(method, amount, payment_id){
+    const name=cName.value, email=cEmail.value, phone=cPhone.value, address=cAddress.value;
+    const sub=subtotal(), charge=computeCharge(cDelivery.value, cPayment.value, sub);
+    const wrap=document.createElement('div'); wrap.innerHTML=`<div id="invoiceContent" style="padding:20px;font-family:Arial,sans-serif;max-width:800px;margin:0 auto;"><div style="text-align:center;margin-bottom:20px;border-bottom:2px solid #1a237e;padding-bottom:12px;"><h1 style="color:#1a237e;margin:0">Creator Store</h1><h2 style="margin:8px 0 0 0">INVOICE</h2><p style="color:#666">Electronic Components & Supplies</p></div><div style="display:flex;justify-content:space-between;margin-bottom:20px;"><div><h3 style="color:#1a237e;margin:0 0 8px 0;">Bill To:</h3><p><strong>${name}</strong><br>${email}<br>${phone}<br>${address.replace(/\\n/g,'<br>')}</p></div><div style="text-align:right"><p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p><p><strong>Invoice No:</strong> CS-${Date.now().toString().slice(-6)}</p><p><strong>Payment:</strong> ${method}${payment_id?` (${payment_id})`:''}</p><p><strong>Delivery:</strong> ${cDelivery.value==='pickup'?'Store Pickup':'Shipping'}</p></div></div><table style="width:100%;border-collapse:collapse;margin-bottom:16px;"><thead><tr style="background:#1a237e;color:#fff;"><th style="text-align:left;padding:10px;">Item</th><th style="text-align:center;padding:10px;">Qty</th><th style="text-align:right;padding:10px;">Price</th><th style="text-align:right;padding:10px;">Total</th></tr></thead><tbody>${cart.map(i=>`<tr style="border-bottom:1px solid #ddd;"><td style="padding:10px;">${i.name}</td><td style="padding:10px;text-align:center">${i.qty}</td><td style="padding:10px;text-align:right">₹${i.price.toLocaleString('en-IN')}</td><td style="padding:10px;text-align:right">₹${(i.price*i.qty).toLocaleString('en-IN')}</td></tr>`).join('')}</tbody></table><div style="text-align:right"><p><strong>Subtotal:</strong> ₹${sub.toLocaleString('en-IN',{minimumFractionDigits:2})}</p><p><strong>${cDelivery.value==='pickup'?'Pickup Charges':'Shipping/COD'}:</strong> ₹${charge.toLocaleString('en-IN',{minimumFractionDigits:2})}</p><p style="border-top:1px solid #ddd;padding-top:8px;font-size:1.1rem"><strong>Total:</strong> ₹${(sub+charge).toLocaleString('en-IN',{minimumFractionDigits:2})}</p></div><p style="text-align:center;color:#666;margin-top:24px">Thank you for your purchase!</p></div>`;
+    document.body.appendChild(wrap);
+    html2canvas(wrap.querySelector('#invoiceContent')).then(canvas=>{ const pdf=new jsPDF('p','mm','a4'); const img=canvas.toDataURL('image/png'); const imgW=210; const imgH=canvas.height*imgW/canvas.width; let pos=0; let left=imgH; pdf.addImage(img,'PNG',0,pos,imgW,imgH); left-=295; while(left>=0){ pos=left-imgH; pdf.addPage(); pdf.addImage(img,'PNG',0,pos,imgW,imgH); left-=295; } pdf.save(`CreatorStore_Invoice_${Date.now().toString().slice(-6)}.pdf`); wrap.remove(); cart=[]; updateCartUI(); });
+  }
+
+  // Footer year & initial route
+  document.getElementById('year').textContent=new Date().getFullYear();
+  const initial=(location.hash||'#home').replace('#',''); showSection(initial);
+</script>
+</body>
+</html>

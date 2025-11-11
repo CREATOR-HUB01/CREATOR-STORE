@@ -16,6 +16,7 @@
     header{position:sticky;top:0;z-index:50;background:var(--primary);color:#fff;box-shadow:var(--shadow)}
     .header-content{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
     .logo{display:flex;gap:10px;align-items:center;font-weight:800}
+    .logo img{height:28px;width:auto;border-radius:6px}
     nav ul{list-style:none;display:flex;gap:16px;margin:0;padding:0}
     nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:8px}
     nav a:hover, nav a.active{background:rgba(255,255,255,.12)}
@@ -70,7 +71,7 @@
 <body>
   <header>
     <div class="container header-content">
-      <div class="logo"><i class="fa-solid fa-microchip"></i> Creator Store</div>
+      <div class="logo" id="logoSlot"><i class="fa-solid fa-microchip"></i> <span>Creator Store</span></div>
       <nav>
         <ul>
           <li><a href="#home" class="nav-link active">Home</a></li>
@@ -217,37 +218,82 @@
   }
   window.addEventListener('hashchange',()=> showSection((location.hash||'#home').replace('#','')));
 
-  // -------- Load DATA from products.json --------
-  let STORE = { categories:{}, products:[], kits:[] };
+  // -------- Load DATA from products.json (new schema) --------
+  let STORE = { logo:'', categories:{} };
   fetch('products.json')
     .then(r=>r.json())
     .then(data=>{
       STORE = data;
+      applyLogo();
       buildCategories();
       buildFilters();
-      renderProducts(STORE.products);
-      renderKits(STORE.kits);
+      const allProducts = flattenProducts();
+      renderProducts(allProducts);
+      renderKits();
     })
     .catch(err=>{
       console.error('Failed to load products.json', err);
       document.getElementById('productsContainer').innerHTML = '<p style="color:#d32f2f">Failed to load products.json</p>';
     });
 
-  // -------- Categories --------
+  function applyLogo(){
+    if(!STORE.logo) return;
+    const slot = document.getElementById('logoSlot');
+    slot.innerHTML = `<img src="${STORE.logo}" alt="logo"><span>Creator Store</span>`;
+  }
+
+  function flattenProducts(){
+    const merged = [];
+    Object.entries(STORE.categories).forEach(([key, meta])=>{
+      if(key==='kits') return; // handled separately
+      (meta.products||[]).forEach(p=> merged.push({...p, category:key}));
+    });
+    return merged;
+  }
+
+  // -------- Categories grid --------
   function buildCategories(){
     const categoryGrid=document.getElementById('categoryGrid');
     categoryGrid.innerHTML='';
     Object.entries(STORE.categories).forEach(([key, meta])=>{
+      if(key==='kits') return;
       const d=document.createElement('div'); d.className='card';
       d.innerHTML = `<div class="card-img" style="background-image:url('${meta.img||''}')"></div>
-        <div class="card-body"><h3>${meta.label||key}</h3><p>Explore ${meta.label?.toLowerCase()||key} (${STORE.products.filter(p=>p.category===key).length} items)</p></div>`;
-      d.addEventListener('click',()=>{ document.getElementById('categoryFilter').value = key; location.hash='#products'; applyAllFilters(); });
+        <div class="card-body"><h3>${meta.label||key}</h3><p>${(meta.products||[]).length} items</p></div>`;
+      d.addEventListener('click',()=>{
+        document.getElementById('categoryFilter').value = key;
+        location.hash='#products';
+        applyAllFilters();
+      });
       categoryGrid.appendChild(d);
     });
   }
 
-  // -------- Products & Kits rendering --------
+  // -------- Filters & Search --------
   const productsContainer=document.getElementById('productsContainer');
+  const categoryFilter=document.getElementById('categoryFilter');
+  function buildFilters(){
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+    Object.entries(STORE.categories).forEach(([k,meta])=>{
+      if(k==='kits') return;
+      const o=document.createElement('option'); o.value=k; o.textContent=meta.label || k; categoryFilter.appendChild(o);
+    });
+  }
+  const minPrice=document.getElementById('minPrice'), maxPrice=document.getElementById('maxPrice'), searchInput=document.getElementById('searchInput');
+  document.getElementById('applyFilters').addEventListener('click', ()=>{ location.hash='#products'; applyAllFilters(); });
+  document.getElementById('clearFilters').addEventListener('click', ()=>{
+    categoryFilter.value='all'; minPrice.value=''; maxPrice.value=''; searchInput.value='';
+    location.hash='#products'; renderProducts(flattenProducts());
+  });
+  document.getElementById('searchBtn').addEventListener('click', ()=>{ location.hash='#products'; applyAllFilters(); });
+  searchInput.addEventListener('keyup',(e)=>{ if(e.key==='Enter'){ location.hash='#products'; applyAllFilters(); } });
+  function applyAllFilters(){
+    const cat=categoryFilter.value, q=(searchInput.value||'').toLowerCase().trim(), lo=Number(minPrice.value)||0, hi=Number(maxPrice.value)||999999;
+    const list = flattenProducts().filter(p => (cat==='all'||p.category===cat) && (+p.price)>=lo && (+p.price)<=hi && (q==='' || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
+    renderProducts(list);
+  }
+
+  // -------- Products / Kits rendering --------
   function renderProducts(list){
     productsContainer.innerHTML='';
     if(list.length===0){ productsContainer.innerHTML='<p>No products found.</p>'; return; }
@@ -268,9 +314,10 @@
   }
 
   const kitsContainer=document.getElementById('kitsContainer');
-  function renderKits(list){
+  function renderKits(){
     kitsContainer.innerHTML='';
-    list.forEach(p=>{
+    const kits = (STORE.categories.kits?.products)||[];
+    kits.forEach(p=>{
       const c=document.createElement('div'); c.className='card';
       c.innerHTML = `
         <div class="product-img" style="background-image:url('${p.image||''}')">${p.badge?`<span class="badge">${p.badge}</span>`:''}</div>
@@ -285,28 +332,21 @@
     bindAdd();
   }
 
-  // -------- Filters & Search --------
-  const categoryFilter=document.getElementById('categoryFilter');
-  function buildFilters(){
-    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
-    Object.entries(STORE.categories).forEach(([k,meta])=>{
-      const o=document.createElement('option'); o.value=k; o.textContent=meta.label || k; categoryFilter.appendChild(o);
-    });
-  }
-  const minPrice=document.getElementById('minPrice'), maxPrice=document.getElementById('maxPrice'), searchInput=document.getElementById('searchInput');
-  document.getElementById('applyFilters').addEventListener('click', ()=>{ location.hash='#products'; applyAllFilters(); });
-  document.getElementById('clearFilters').addEventListener('click', ()=>{ categoryFilter.value='all'; minPrice.value=''; maxPrice.value=''; searchInput.value=''; location.hash='#products'; renderProducts(STORE.products); });
-  document.getElementById('searchBtn').addEventListener('click', ()=>{ location.hash='#products'; applyAllFilters(); });
-  searchInput.addEventListener('keyup',(e)=>{ if(e.key==='Enter'){ location.hash='#products'; applyAllFilters(); } });
-  function applyAllFilters(){
-    const cat=categoryFilter.value, q=(searchInput.value||'').toLowerCase().trim(), lo=Number(minPrice.value)||0, hi=Number(maxPrice.value)||999999;
-    const list = STORE.products.filter(p => (cat==='all'||p.category===cat) && (+p.price)>=lo && (+p.price)<=hi && (q==='' || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q) || p.category.toLowerCase().includes(q)));
-    renderProducts(list);
-  }
-
   // -------- Cart / Checkout / Invoice --------
   let cart=[]; const cartCount=document.getElementById('cartCount');
-  function bindAdd(){ document.querySelectorAll('.add').forEach(b=>b.onclick=(e)=>{ const id=e.currentTarget.dataset.id; const prod = STORE.products.find(p=>String(p.id)===String(id)) || STORE.kits.find(k=>String(k.id)===String(id)); const ex=cart.find(i=>String(i.id)===String(id)); if(ex){ ex.qty+=1; } else { cart.push({id:prod.id, name:prod.name, price:+prod.price, image:prod.image, qty:1}); } updateCartUI(); toast(`${prod.name} added to cart`); }); }
+  function bindAdd(){ document.querySelectorAll('.add').forEach(b=>b.onclick=(e)=>{
+    const id=e.currentTarget.dataset.id;
+    // search in all category products, including kits
+    let prod=null;
+    for(const [key, meta] of Object.entries(STORE.categories)){
+      const found = (meta.products||[]).find(p=>String(p.id)===String(id));
+      if(found){ prod=found; break; }
+    }
+    if(!prod) return;
+    const ex=cart.find(i=>String(i.id)===String(id));
+    if(ex){ ex.qty+=1; } else { cart.push({id:prod.id, name:prod.name, price:+prod.price, image:prod.image, qty:1}); }
+    updateCartUI(); toast(`${prod.name} added to cart`);
+  });}
   function toast(msg){ const n=document.createElement('div'); n.style.cssText="position:fixed;top:90px;right:20px;background:#111;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:var(--shadow);z-index:1000"; n.textContent=msg; document.body.appendChild(n); setTimeout(()=>{n.style.opacity='0'; n.style.transition='all .3s'; setTimeout(()=>n.remove(),300)},1700); }
   function subtotal(){ return cart.reduce((t,i)=>t+i.price*i.qty,0); }
   function updateCartUI(){
@@ -341,7 +381,7 @@
   function refreshSummary(){
     const list=document.getElementById('summaryItems'); if(!list) return;
     list.innerHTML=''; if(cart.length===0){ list.innerHTML='<p>No items.</p>'; return;}
-    cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.margin='6px 0'; row.innerHTML=`<span>${i.name} × ${i.qty}</span><strong>₹${(i.price*i.qty).toLocaleString('en-IN')}</strong>`; list.appendChild(row); });
+    cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justify-content='space-between'; row.style.margin='6px 0'; row.innerHTML=`<span>${i.name} × ${i.qty}</span><strong>₹${(i.price*i.qty).toLocaleString('en-IN')}</strong>`; list.appendChild(row); });
     const sub=subtotal(), ch=computeCharge(cDelivery.value, cPayment.value, sub);
     document.getElementById('sum2Subtotal').textContent='₹'+sub.toLocaleString('en-IN');
     document.getElementById('sum2Charge').textContent='₹'+ch.toLocaleString('en-IN');

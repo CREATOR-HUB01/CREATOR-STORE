@@ -21,14 +21,14 @@
           "description": "Compact 5V/16MHz board"
         },
         {
-          "id": 102,
+          "id": 103,
           "name": "Arduino Nano (Clone) without solder",
           "price": 249,
           "image": "images/nano without solder.jpg",
           "description": "Compact 5V/16MHz board"
         },
         {
-          "id": 103,
+          "id": 104,
           "name": "Raspberry 4 Model B 4GB",
           "price": 9000,
           "image": "images/RP4 4GB.jpg",
@@ -197,13 +197,13 @@
           "image": "images/nrf24l01.jpg"
         },
          {
-          "id": 802,
+          "id": 803,
           "name": "NRF24L01+ 2.4GHz with External Antenna",
           "price": 160,
           "image": "images/nrf with ext antenna.jpg"
         },
         {
-          "id": 803,
+          "id": 804,
           "name": "ESP32 S2 mini",
           "price": 300,
           "image": "images/esp32 s2.jpg"

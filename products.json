@@ -5,7 +5,7 @@
       "label": "Microcontrollers",
       "img": "images/microcontrollers.jpg",
       "products": [
-        { "id": 101, "name": "Arduino UNO R3 (Original)", "price": 1799, "image": "images/arduino-uno.jpg", "badge": "Bestseller", "description": "ATmega328P based dev board" },
+        { "id": 101, "name": "Arduino UNO R3 (Original)", "price": 1799, "image": "images/arduino-uno.jpg", "description": "ATmega328P based dev board" },
         { "id": 102, "name": "Arduino Nano (Clone)", "price": 249, "image": "images/arduino-nano.jpg", "description": "Compact 5V/16MHz board" },
         { "id": 103, "name": "Raspberry Pi Pico", "price": 399, "image": "images/rpi-pico.jpg", "description": "RP2040 dual-core MCU" }
       ]
@@ -23,62 +23,144 @@
       "label": "Development Boards",
       "img": "images/dev-boards.jpg",
       "products": [
-        { "id": 301, "name": "ESP32 DevKit V1 (WROOM)", "price": 349, "image": "images/esp32.jpg" },
-        { "id": 302, "name": "STM32F103C8T6 Blue Pill", "price": 279, "image": "images/bluepill.jpg" },
+        { "id": 301, "name": "ESP32 DevKit V1", "price": 349, "image": "images/esp32.jpg" },
+        { "id": 302, "name": "STM32 Blue Pill", "price": 279, "image": "images/bluepill.jpg" },
         { "id": 303, "name": "ESP8266 NodeMCU v3", "price": 249, "image": "images/nodemcu.jpg" }
       ]
     },
-    "active": {
+    "active_components": {
       "label": "Active Components",
       "img": "images/active.jpg",
       "products": [
         { "id": 401, "name": "L298N Motor Driver", "price": 149, "image": "images/l298n.jpg" },
         { "id": 402, "name": "A4988 Stepper Driver", "price": 89, "image": "images/a4988.jpg" },
-        { "id": 403, "name": "ULN2003 Darlington Array", "price": 49, "image": "images/uln2003.jpg" }
+        { "id": 403, "name": "ULN2003 Darlington", "price": 49, "image": "images/uln2003.jpg" }
       ]
     },
-    "passive": {
+    "passive_components": {
       "label": "Passive Components",
       "img": "images/passive.jpg",
       "products": [
-        { "id": 501, "name": "Resistor Kit 1/4W (600pcs)", "price": 129, "image": "images/resistor-kit.jpg" },
-        { "id": 502, "name": "Capacitor Assortment 120pcs", "price": 149, "image": "images/capacitors.jpg" },
+        { "id": 501, "name": "Resistor Kit 600pcs", "price": 129, "image": "images/resistor-kit.jpg" },
+        { "id": 502, "name": "Capacitor Assortment", "price": 149, "image": "images/capacitors.jpg" },
         { "id": 503, "name": "Inductor Assortment", "price": 179, "image": "images/inductors.jpg" }
       ]
     },
     "power": {
-      "label": "Power Components",
+      "label": "Power Modules",
       "img": "images/power.jpg",
       "products": [
         { "id": 601, "name": "LM7805 Regulator", "price": 25, "image": "images/lm7805.jpg" },
         { "id": 602, "name": "LM2596 Buck Module", "price": 99, "image": "images/lm2596.jpg" },
-        { "id": 603, "name": "MOSFET IRLZ44N", "price": 65, "image": "images/irlz44n.jpg" }
-      ]
-    },
-    "tools": {
-      "label": "Tools",
-      "img": "images/tools.jpg",
-      "products": [
-        { "id": 701, "name": "Soldering Iron 60W", "price": 299, "image": "images/solder-iron.jpg" },
-        { "id": 702, "name": "Digital Multimeter", "price": 499, "image": "images/multimeter.jpg" },
-        { "id": 703, "name": "Solder Wire 60/40 100g", "price": 129, "image": "images/solder-wire.jpg" }
+        { "id": 603, "name": "IRLZ44N MOSFET", "price": 65, "image": "images/irlz44n.jpg" }
       ]
     },
     "modules": {
       "label": "Communication Modules",
       "img": "images/modules.jpg",
       "products": [
-        { "id": 801, "name": "HC-05 Bluetooth", "price": 220, "image": "images/hc05.jpg" },
-        { "id": 802, "name": "NRF24L01+ 2.4GHz", "price": 120, "image": "images/nrf24l01.jpg" },
-        { "id": 803, "name": "ESP-01 WiFi", "price": 129, "image": "images/esp01.jpg" }
+        { "id": 701, "name": "HC-05 Bluetooth", "price": 220, "image": "images/hc05.jpg" },
+        { "id": 702, "name": "NRF24L01+ Module", "price": 120, "image": "images/nrf24l01.jpg" },
+        { "id": 703, "name": "ESP-01 WiFi", "price": 129, "image": "images/esp01.jpg" }
+      ]
+    },
+    "smt": {
+      "label": "SMT Parts",
+      "img": "images/smt.jpg",
+      "products": [
+        { "id": 801, "name": "SMD LED Pack", "price": 149, "image": "images/smd-led.jpg" },
+        { "id": 802, "name": "SMD Resistor Pack", "price": 129, "image": "images/smd-res.jpg" },
+        { "id": 803, "name": "SMD Capacitor Pack", "price": 129, "image": "images/smd-cap.jpg" }
+      ]
+    },
+    "tools": {
+      "label": "Tools & Equipments",
+      "img": "images/tools.jpg",
+      "products": [
+        { "id": 901, "name": "Soldering Iron 60W", "price": 299, "image": "images/solder-iron.jpg" },
+        { "id": 902, "name": "Digital Multimeter", "price": 499, "image": "images/multimeter.jpg" },
+        { "id": 903, "name": "Solder Wire 100g", "price": 129, "image": "images/solder-wire.jpg" }
+      ]
+    },
+    "display": {
+      "label": "Displays",
+      "img": "images/display.jpg",
+      "products": [
+        { "id": 1001, "name": "16x2 LCD Module", "price": 249, "image": "images/lcd16x2.jpg" },
+        { "id": 1002, "name": "OLED 0.96\"", "price": 199, "image": "images/oled096.jpg" },
+        { "id": 1003, "name": "TFT 2.4\" SPI", "price": 699, "image": "images/tft24.jpg" }
+      ]
+    },
+    "connectors": {
+      "label": "Connectors & Cables",
+      "img": "images/connectors.jpg",
+      "products": [
+        { "id": 1101, "name": "Dupont Jumper Pack", "price": 129, "image": "images/dupont.jpg" },
+        { "id": 1102, "name": "USB Type-C Cable", "price": 199, "image": "images/typec.jpg" },
+        { "id": 1103, "name": "Barrel Jack 2.1mm", "price": 49, "image": "images/barrel.jpg" }
+      ]
+    },
+    "batteries": {
+      "label": "Batteries & Power",
+      "img": "images/batteries.jpg",
+      "products": [
+        { "id": 1201, "name": "18650 Li-ion Cell", "price": 299, "image": "images/18650.jpg" },
+        { "id": 1202, "name": "LiPo 2S 7.4V 2000mAh", "price": 899, "image": "images/lipo2s.jpg" },
+        { "id": 1203, "name": "Power Bank 10k", "price": 1299, "image": "images/powerbank.jpg" }
+      ]
+    },
+    "sensors_advanced": {
+      "label": "Advanced Sensors",
+      "img": "images/adv-sensors.jpg",
+      "products": [
+        { "id": 1301, "name": "TPMS Sensor Module", "price": 799, "image": "images/tpms.jpg" },
+        { "id": 1302, "name": "Gas Sensor MQ-135", "price": 149, "image": "images/mq135.jpg" },
+        { "id": 1303, "name": "Optical Flow Sensor", "price": 499, "image": "images/optflow.jpg" }
+      ]
+    },
+    "robotics": {
+      "label": "Robotics",
+      "img": "images/robotics.jpg",
+      "products": [
+        { "id": 1401, "name": "Micro Servo 9g", "price": 199, "image": "images/servo9g.jpg" },
+        { "id": 1402, "name": "N20 Gear Motor", "price": 299, "image": "images/n20.jpg" },
+        { "id": 1403, "name": "Motor Driver TB6612", "price": 249, "image": "images/tb6612.jpg" }
+      ]
+    },
+    "audio": {
+      "label": "Audio Components",
+      "img": "images/audio.jpg",
+      "products": [
+        { "id": 1501, "name": "8Ω 3W Speaker", "price": 199, "image": "images/speaker.jpg" },
+        { "id": 1502, "name": "Audio Jack 3.5mm", "price": 49, "image": "images/jack3.5.jpg" },
+        { "id": 1503, "name": "MAX9814 Mic Amp", "price": 249, "image": "images/max9814.jpg" }
+      ]
+    },
+    "security": {
+      "label": "Security & Access",
+      "img": "images/security.jpg",
+      "products": [
+        { "id": 1601, "name": "RFID RC522 Module", "price": 299, "image": "images/rc522.jpg" },
+        { "id": 1602, "name": "Keypad 4x4", "price": 149, "image": "images/keypad.jpg" },
+        { "id": 1603, "name": "Magnetic Sensor", "price": 99, "image": "images/mag-sensor.jpg" }
+      ]
+    },
+    "prototyping": {
+      "label": "Prototyping",
+      "img": "images/proto.jpg",
+      "products": [
+        { "id": 1701, "name": "Breadboard 830 pt", "price": 249, "image": "images/breadboard.jpg" },
+        { "id": 1702, "name": "Jumper Wires 120pcs", "price": 179, "image": "images/jumpers.jpg" },
+        { "id": 1703, "name": "PCB Holder / Vise", "price": 599, "image": "images/pcb-vise.jpg" }
       ]
     },
     "kits": {
       "label": "Kits",
       "img": "images/kits.jpg",
       "products": [
-        { "id": "k1", "name": "Line Follower Robot Kit", "price": 1299, "image": "images/kit-line-follower.jpg", "badge": "Popular" },
-        { "id": "k2", "name": "Smart Home Starter Kit", "price": 1899, "image": "images/kit-smart-home.jpg" }
+        { "id": 1801, "name": "Line Follower Robot Kit", "price": 1299, "image": "images/kit-line-follower.jpg" },
+        { "id": 1802, "name": "Smart Home Starter Kit", "price": 1899, "image": "images/kit-smart-home.jpg" },
+        { "id": 1803, "name": "IoT Weather Station Kit", "price": 2199, "image": "images/kit-weather.jpg" }
       ]
     }
   }

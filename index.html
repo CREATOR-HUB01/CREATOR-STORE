@@ -3,67 +3,219 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Creator Store - Checkout (QR Payment)</title>
+  <title>CREATOR STORE — Premium Electronics & Kits</title>
 
-  <!-- jsPDF for PDF generation -->
+  <!-- icons & fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- jsPDF for invoice -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- EmailJS SDK (optional fallback) -->
+  <!-- EmailJS (optional fallback) -->
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#0b1220;color:#e6eef8;margin:0}
-    .container{max-width:1000px;margin:24px auto;padding:20px}
-    h1{margin:0 0 14px}
-    .row{display:flex;gap:16px;align-items:flex-start}
-    .col{flex:1}
-    label{display:block;margin:8px 0 6px;color:#cbd5e1}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:#071021;color:#e6eef8}
-    .btn{background:#ff7f00;color:#111;padding:10px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
-    .muted{color:#94a3b8}
-    .qr-box{width:320px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.03);text-align:center}
-    .preview{max-width:100%;border-radius:8px;border:1px solid rgba(255,255,255,0.06)}
-    .small{font-size:0.9rem;color:#cbd5e1}
-    .notice{margin-top:12px;color:#cbd5e1;background:rgba(255,255,255,0.02);padding:10px;border-radius:8px}
-    #status{margin-top:12px}
-    .file-label{margin-top:8px;font-size:.9rem;color:#cbd5e1}
+    /* ---------- DESIGN: luxurious dark glass theme ---------- */
+    :root{
+      --bg:#061025;
+      --card:rgba(255,255,255,0.04);
+      --glass:rgba(255,255,255,0.03);
+      --accent:#ff7f00;
+      --muted:#9fb0c9;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef8;background:linear-gradient(180deg,#030513 0%,#061025 100%);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:24px}
+
+    /* header */
+    header{position:sticky;top:10px;z-index:60;padding:8px 0}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:40px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .brand h2{margin:0;font-size:1.2rem;letter-spacing:.6px}
+    nav ul{list-style:none;display:flex;gap:14px;margin:0;padding:0;align-items:center}
+    nav a{padding:8px 12px;border-radius:8px;opacity:.95}
+    nav a:hover{background:rgba(255,255,255,0.03)}
+
+    /* hero */
+    .hero{position:relative;padding:48px 0 28px;overflow:hidden;border-radius:12px}
+    .hero .bg{position:absolute;inset:0;background:radial-gradient(1200px 400px at 10% 20%, rgba(255,127,0,0.06), transparent 5%), linear-gradient(120deg,#071430 0%, #061025 60%);filter:blur(20px);transform:translateZ(0)}
+    .hero .particles{position:absolute;inset:0;pointer-events:none}
+    .hero-inner{position:relative;display:flex;gap:28px;align-items:center}
+    .hero-left{flex:1;max-width:720px}
+    .kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg,rgba(255,127,0,0.14),rgba(255,127,0,0.06));font-weight:700;color:var(--accent)}
+    h1{font-size:2.4rem;margin:12px 0;line-height:1.02;letter-spacing:.6px}
+    p.lead{color:var(--muted);margin:0 0 16px}
+
+    /* hero device */
+    .hero-device{width:340px;height:260px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(2,6,23,0.6)}
+    .hero-device img{width:80%;filter:drop-shadow(0 20px 40px rgba(2,6,23,0.6))}
+
+    /* layout */
+    section{padding:28px 0}
+    .section-title{font-size:1.2rem;margin:0 0 12px}
+    .grid{display:grid;gap:16px}
+
+    /* categories */
+    .categories.grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+    .cat{background:var(--card);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;cursor:pointer;transition:transform .28s, box-shadow .28s}
+    .cat:hover{transform:translateY(-8px);box-shadow:0 30px 50px rgba(2,6,23,0.6)}
+    .cat img{width:100%;height:90px;object-fit:cover;border-radius:8px}
+    .cat h4{margin:0;font-size:1rem}
+
+    /* products */
+    .products.grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:12px;box-shadow:0 18px 40px rgba(2,6,23,0.6);transition:transform .25s}
+    .card:hover{transform:translateY(-8px)}
+    .product-img{height:150px;background:#071428;border-radius:10px;background-size:cover;background-position:center;overflow:hidden}
+    .card h3{margin:8px 0 6px;font-size:1rem}
+    .price{color:var(--accent);font-weight:800}
+
+    /* search & filter */
+    .controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .controls input, .controls select{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+
+    /* cart drawer */
+    .cart-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--accent);color:#111;border-radius:999px;font-weight:800;cursor:pointer}
+    .cart-count{background:#111;padding:4px 8px;border-radius:999px;color:#fff}
+
+    /* cart page */
+    .cart-wrap{display:grid;grid-template-columns:2fr 360px;gap:18px}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.02);text-align:left}
+
+    /* checkout + invoice */
+    .form{background:var(--glass);padding:12px;border-radius:12px}
+
+    /* footer */
+    footer{padding:22px 0;color:var(--muted);font-size:.9rem;text-align:center}
+
+    /* subtle animations */
+    .fade-in{opacity:0;transform:translateY(8px);animation:fadeIn .7s forwards}
+    @keyframes fadeIn{to{opacity:1;transform:none}}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero-inner{flex-direction:column;text-align:center}
+      .cart-wrap{grid-template-columns:1fr}
+      .products.grid{grid-template-columns:1fr 1fr}
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Checkout — Pay by QR</h1>
-    <p class="muted">Scan the QR, pay, upload screenshot + UTR/Txn ID. We'll verify and ship.</p>
+    <header>
+      <div class="nav">
+        <div class="brand">
+          <img src="images/logo.png" alt="logo">
+          <div>
+            <h2>CREATOR STORE</h2>
+            <div style="font-size:.85rem;color:var(--muted)">Premium components & kits</div>
+          </div>
+        </div>
 
-    <div class="row">
-      <div class="col">
-        <form id="checkoutForm">
-          <label>Full Name *</label>
-          <input id="cName" required>
+        <div style="display:flex;align-items:center;gap:12px">
+          <nav>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#products">Products</a></li>
+              <li><a href="#categories">Categories</a></li>
+              <li><a href="#kits">Kits</a></li>
+              <li><a href="#about">About</a></li>
+            </ul>
+          </nav>
+          <div class="cart-btn" id="openCart"> <i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-count" id="cartCount">0</span></div>
+        </div>
+      </div>
+    </header>
 
-          <label>Email *</label>
-          <input id="cEmail" type="email" required>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="bg"></div>
+      <div class="particles" id="particles"></div>
+      <div class="hero-inner fade-in">
+        <div class="hero-left">
+          <div class="kicker">Limited edition • Free shipping over ₹1500</div>
+          <h1>Premium parts for makers, students and R&D teams</h1>
+          <p class="lead">Hand-picked microcontrollers, sensors, power modules and development kits. Clean inventory, fast shipping and technical support.</p>
+          <div style="margin-top:14px;display:flex;gap:12px">
+            <a href="#products" class="btn" style="background:var(--accent);color:#111">Shop Now</a>
+            <a href="#about" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Learn More</a>
+          </div>
+        </div>
+        <div class="hero-device fade-in">
+          <img src="images/hero-device.png" alt="device">
+        </div>
+      </div>
+    </section>
 
-          <label>Phone (10 digits) *</label>
-          <input id="cPhone" maxlength="10" required>
+    <!-- CATEGORIES -->
+    <section id="categories">
+      <h3 class="section-title">Categories</h3>
+      <div class="grid categories" id="categoryGrid"></div>
+    </section>
 
-          <label>Address *</label>
-          <textarea id="cAddress" rows="3" required></textarea>
+    <!-- PRODUCTS -->
+    <section id="products">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 class="section-title">Products</h3>
+        <div class="controls">
+          <input id="searchInput" placeholder="Search components...">
+          <select id="categoryFilter"><option value="all">All</option></select>
+          <input id="minPrice" type="number" placeholder="Min">
+          <input id="maxPrice" type="number" placeholder="Max">
+          <button id="applyFilters" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04)">Apply</button>
+        </div>
+      </div>
 
-          <label>Delivery</label>
-          <select id="cDelivery">
-            <option value="delivery">Shipping</option>
-            <option value="pickup">Pickup</option>
-          </select>
+      <div class="grid products grid" id="productsContainer"></div>
+    </section>
 
-          <label>Payment method</label>
-          <select id="cPayment">
-            <option value="qr">Pay via QR (upload screenshot)</option>
-            <option value="cod">Cash on Delivery</option>
-          </select>
+    <!-- KITS -->
+    <section id="kits">
+      <h3 class="section-title">Kits</h3>
+      <div class="grid products" id="kitsContainer"></div>
+    </section>
+
+    <!-- CART -->
+    <section id="cart" style="display:none">
+      <h3 class="section-title">Your Cart</h3>
+      <div class="cart-wrap">
+        <div>
+          <table class="table" id="cartTable">
+            <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th><th></th></tr></thead>
+            <tbody id="cartBody"><tr><td colspan="5" style="padding:20px;color:var(--muted)">Your cart is empty.</td></tr></tbody>
+          </table>
+        </div>
+        <aside style="background:var(--glass);padding:12px;border-radius:12px">
+          <div style="display:flex;justify-content:space-between"><strong>Subtotal</strong><strong id="sumSubtotal">₹0</strong></div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px"><span>Shipping/COD</span><strong id="sumCharge">₹0</strong></div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;font-weight:800"><span>Grand Total</span><strong id="sumTotal">₹0</strong></div>
+          <div style="margin-top:12px;display:flex;gap:10px"><a href="#products" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04)">Continue</a><a href="#checkout" class="btn">Checkout</a></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- CHECKOUT (QR flow) -->
+    <section id="checkout" style="display:none">
+      <h3 class="section-title">Checkout</h3>
+      <div style="display:grid;grid-template-columns:1fr 360px;gap:18px">
+        <form id="checkoutForm" class="form">
+          <label>Full Name *</label><input id="cName" required>
+          <label>Email *</label><input id="cEmail" type="email" required>
+          <label>Phone (10 digits) *</label><input id="cPhone" maxlength="10" required>
+          <label>Address *</label><textarea id="cAddress" rows="3" required></textarea>
+          <label>Delivery</label><select id="cDelivery"><option value="delivery">Shipping</option><option value="pickup">Pickup</option></select>
+          <label>Payment method</label><select id="cPayment"><option value="qr">Pay via QR (upload screenshot)</option><option value="cod">Cash on Delivery</option></select>
 
           <div id="qrSection" style="margin-top:12px">
             <label>Scan & Pay QR</label>
-            <div class="qr-box">
-              <img id="qrImage" src="images/qr-sample.png" alt="QR" class="preview" style="max-width:250px">
+            <div style="background:var(--glass);padding:12px;border-radius:10px;text-align:center">
+              <img id="qrImage" src="images/qr-sample.png" alt="QR" style="max-width:240px;border-radius:8px">
               <p class="small">Scan this QR with UPI / bank app and pay</p>
             </div>
 
@@ -74,215 +226,284 @@
             <input id="utr" placeholder="Enter UTR / transaction id">
           </div>
 
-          <div style="margin-top:14px">
-            <button class="btn" type="submit">Pay / Place Order</button>
-          </div>
+          <div style="margin-top:14px"><button class="btn" type="submit">Pay / Place Order</button></div>
         </form>
 
-        <div id="status"></div>
-      </div>
-
-      <div style="width:320px">
-        <div style="background:rgba(255,255,255,0.03);padding:12px;border-radius:10px">
-          <h3 style="margin:0 0 8px">Order Summary</h3>
+        <div class="form">
+          <h4 style="margin-top:0">Order Summary</h4>
           <div id="summaryItems"></div>
-          <hr style="border-color:rgba(255,255,255,0.04)">
-          <div style="display:flex;justify-content:space-between"><strong>Items</strong><strong id="sumItems">₹0</strong></div>
-          <div style="display:flex;justify-content:space-between"><span>Shipping/COD</span><strong id="sumCharge">₹0</strong></div>
-          <div style="display:flex;justify-content:space-between;font-weight:800"><span>Grand</span><strong id="sumGrand">₹0</strong></div>
-        </div>
-
-        <div class="notice">
-          After you upload the screenshot and UTR and click <b>Pay / Place Order</b>:
-          <ul>
-            <li>We will generate a PDF invoice (contains payment screenshot) and email it to the store owner.</li>
-            <li>You will receive a confirmation email: "We received your order — verifying payment."</li>
-            <li>If email sending isn't configured, the PDF will download for manual sending.</li>
-          </ul>
+          <div style="border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;margin-top:10px">
+            <div style="display:flex;justify-content:space-between"><span>Items</span><strong id="sum2Subtotal">₹0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px"><span>Shipping/COD</span><strong id="sum2Charge">₹0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px;font-weight:800"><span>Grand</span><strong id="sum2Total">₹0</strong></div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ORDER COMPLETE -->
+    <section id="order-complete" style="display:none">
+      <div class="form">
+        <h3><i class="fa-solid fa-circle-check" style="color:#2e7d32"></i> Order Received</h3>
+        <p id="ocText">Thank you — your order has been received and is under verification.</p>
+        <div id="ocItems"></div>
+        <div style="margin-top:10px"><a id="downloadInvoice" class="btn">Download Invoice</a><a href="#home" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);margin-left:8px">Home</a></div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Creator Store — Customer Service • Shipping Policy • Return Policy • FAQ • Terms & Privacy
+    </footer>
   </div>
 
-<script>
-/* ==========================
- CONFIG - Edit the values below before testing
- 1) GAS_WEBHOOK_URL (recommended): Paste the deployed Google Apps Script web app URL (see instructions below)
- 2) If you prefer EmailJS, fill the EMAILJS_* values
- 3) OWNER_EMAIL: email that should receive the PDF
-================================================= */
-const GAS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxLiY7rsb5szTMh1p3g9Bjxr1d-3BQ-eZa1NLDT9CRDap-PO87HSzi2g5BgTy07lh0PgA/exec'; // e.g. 'https://script.google.com/macros/s/AKfycbx.../exec'  - set this if you will use Google Apps Script
-const EMAILJS_USER_ID = ''; // optional: 'user_xxx'
-const EMAILJS_SERVICE_ID = ''; // optional: 'service_xxx'
-const EMAILJS_TEMPLATE_ID = ''; // optional: 'template_xxx'
-const OWNER_EMAIL = 'creatorhub.official.in@gmail.com'; // change to your email
-/* ================================================== */
+  <script>
+  /* =========================
+     CONFIG (no secrets here)
+     - Put your GAS webhook URL (recommended) or EmailJS IDs
+     - Do NOT place private API keys in this file
+     ========================= */
+  const GAS_WEBHOOK_URL = ''; // optional: Google Apps Script URL (recommended)
+  const EMAILJS_USER_ID = ''; // optional
+  const EMAILJS_SERVICE_ID = ''; // optional
+  const EMAILJS_TEMPLATE_ID = ''; // optional
+  const OWNER_EMAIL = 'owner@example.com'; // change to your email
+  /* ========================= */
 
-/* optional EmailJS init if you fill user id */
-if(window.emailjs && EMAILJS_USER_ID) emailjs.init(EMAILJS_USER_ID);
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-/* ===== Sample cart fallback - if your site has a global `cart` it will be used ===== */
-let cart = window.cart || null;
-if(!cart){
-  cart = [
-    { id:101, name:'Arduino UNO R3 (Original)', price:1799, qty:1 },
-    { id:102, name:'Arduino Nano (Clone)', price:249, qty:1 },
-    { id:103, name:'Raspberry Pi Pico', price:399, qty:1 }
-  ];
-}
+  // particles (luxury floating)
+  (function createParticles(){
+    const cont = document.getElementById('particles');
+    for(let i=0;i<22;i++){
+      const d = document.createElement('div');
+      d.style.position='absolute';
+      d.style.width=(6+Math.random()*22)+'px';
+      d.style.height=d.style.width;
+      d.style.left = Math.random()*100+'%';
+      d.style.top = Math.random()*100+'%';
+      d.style.borderRadius='50%';
+      d.style.background = `rgba(255,255,255,${0.02 + Math.random()*0.06})`;
+      d.style.filter='blur(8px)';
+      d.style.transform = `translate3d(0,0,0)`;
+      d.style.animation = `float${i%4} ${6 + Math.random()*12}s linear infinite`;
+      cont.appendChild(d);
+    }
+    const s = document.createElement('style');
+    s.innerHTML = `@keyframes float0{0%{transform:translateY(0)}50%{transform:translateY(-30px)}100%{transform:translateY(0)}}@keyframes float1{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}@keyframes float2{0%{transform:translateY(0)}50%{transform:translateY(-60px)}100%{transform:translateY(0)}}@keyframes float3{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}`;
+    document.head.appendChild(s);
+  })();
 
-function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
-function computeCharge(delivery, payment, sub){ if(delivery==='pickup') return 0; if(payment==='cod') return 80; return (sub<1500)?50:0; }
+  // ========== Load product catalog from products.json ==========
+  let STORE = { logo:'images/logo.png', categories:{} };
+  fetch('products.json').then(r=>r.json()).then(data=>{ STORE=data; initShop(); }).catch(err=>{ console.error('products.json load failed',err); });
 
-/* render summary */
-function renderSummary(){ const list=document.getElementById('summaryItems'); list.innerHTML=''; cart.forEach(i=>{ const row=document.createElement('div'); row.style.display='flex'; row.style.justifyContent='space-between'; row.style.margin='6px 0'; row.innerHTML=`<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; list.appendChild(row); }); const sub=subtotal(); const charge=computeCharge(document.getElementById('cDelivery').value, document.getElementById('cPayment').value, sub); document.getElementById('sumItems').textContent='₹'+sub.toLocaleString('en-IN'); document.getElementById('sumCharge').textContent='₹'+charge; document.getElementById('sumGrand').textContent='₹'+(sub+charge).toLocaleString('en-IN'); }
-renderSummary();
-
-/* UI helpers */
-const checkoutForm = document.getElementById('checkoutForm');
-const payScreenshot = document.getElementById('payScreenshot');
-const statusEl = document.getElementById('status');
-
-function showStatus(msg, isError=false){
-  statusEl.innerHTML = `<div style="padding:10px;border-radius:8px;background:${isError?'#3b0f0f':'#072e12'};color:${isError?'#ffb4b4':'#b7f5c9'}">${msg}</div>`;
-}
-
-/* file to dataURL */
-function fileToDataUrl(file){
-  return new Promise((resolve,reject)=>{
-    const fr=new FileReader();
-    fr.onload=()=>resolve(fr.result);
-    fr.onerror=reject;
-    fr.readAsDataURL(file);
-  });
-}
-
-/* generate PDF (jsPDF) */
-async function generatePdf(orderDetails, screenshotDataUrl){
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation:'portrait', unit:'pt', format:'a4' });
-  const margin = 40; let y = margin;
-  doc.setFontSize(16); doc.text('Creator Store - Order Invoice', margin, y); y+=26;
-  doc.setFontSize(11); doc.text(`Date: ${new Date().toLocaleString()}`, margin, y); y+=18;
-  doc.text(`Buyer: ${orderDetails.name}`, margin, y); y+=16;
-  doc.text(`Email: ${orderDetails.email}`, margin, y); y+=16;
-  doc.text(`Phone: ${orderDetails.phone}`, margin, y); y+=16;
-  doc.text(`Address: ${orderDetails.address}`, margin, y); y+=20;
-  doc.text('Order items:', margin, y); y+=14;
-  doc.setFont(undefined,'bold'); doc.text('Item', margin, y); doc.text('Qty', margin+300, y); doc.text('Price', margin+360, y); doc.setFont(undefined,'normal'); y+=12;
-  orderDetails.items.forEach(it=>{
-    doc.text(it.name, margin, y); doc.text(String(it.qty), margin+300, y); doc.text('₹'+String(it.price*it.qty), margin+360, y); y+=14; if(y>700){ doc.addPage(); y=margin; }
-  });
-  y+=8;
-  doc.text(`Subtotal: ₹${orderDetails.subtotal}`, margin, y); y+=14;
-  doc.text(`Shipping/COD: ₹${orderDetails.charge}`, margin, y); y+=14;
-  doc.text(`Grand total: ₹${orderDetails.grand}`, margin, y); y+=18;
-  doc.setFontSize(12); doc.text(`UTR/Txn ID: ${orderDetails.utr}`, margin, y); y+=18;
-  if(screenshotDataUrl){
-    const imgProps = doc.getImageProperties(screenshotDataUrl);
-    const maxW = 480; const ratio = imgProps.width / imgProps.height;
-    const iw = Math.min(maxW, imgProps.width); const ih = iw / ratio;
-    if(y + ih > 800){ doc.addPage(); y = margin; }
-    doc.text('Payment screenshot:', margin, y); y += 12;
-    doc.addImage(screenshotDataUrl, 'JPEG', margin, y, iw, ih); y += ih + 8;
+  function initShop(){
+    applyLogo();
+    buildCategoryGrid();
+    buildFilters();
+    renderProducts(flattenProducts());
+    renderKits();
   }
-  doc.setFontSize(10); doc.text('This invoice was generated automatically by Creator Store.', margin, 780);
-  const pdfBlob = doc.output('blob');
-  const pdfBase64 = await new Promise((resolve)=>{ const reader=new FileReader(); reader.onload=()=>resolve(reader.result.split(',')[1]); reader.readAsDataURL(pdfBlob); });
-  return { blob: pdfBlob, base64: pdfBase64 };
-}
 
-/* send to Google Apps Script webhook (recommended) */
-async function sendToGAS(gasUrl, ownerEmail, buyerEmail, pdfBase64, orderDetails){
-  const payload = {
-    ownerEmail,
-    buyerEmail,
-    filename: `invoice_${Date.now()}.pdf`,
-    fileBase64: pdfBase64,
-    order: orderDetails
-  };
-  const res = await fetch(gasUrl, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
-  if(!res.ok) throw new Error('GAS webhook responded with ' + res.status);
-  return await res.json();
-}
+  function applyLogo(){ if(!STORE.logo) return; document.querySelector('.brand img').src = STORE.logo; }
 
-/* send via EmailJS fallback (optional) */
-async function sendViaEmailJS(ownerEmail, buyerEmail, pdfBase64, orderDetails){
-  if(!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) throw new Error('EmailJS not configured');
-  if(!window.emailjs) throw new Error('EmailJS SDK not loaded');
-  emailjs.init(EMAILJS_USER_ID);
-  const params = { to_email: ownerEmail, buyer_email: buyerEmail, message: `UTR:${orderDetails.utr} Grand: ₹${orderDetails.grand}`, attachment: pdfBase64 };
-  const result = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-  return result;
-}
+  function flattenProducts(){ const arr=[]; Object.entries(STORE.categories).forEach(([k,meta])=>{ if(k==='kits') return; (meta.products||[]).forEach(p=>arr.push({...p, category:k})); }); return arr; }
 
-/* Main submit */
-checkoutForm.addEventListener('submit', async (e)=>{ e.preventDefault();
-  showStatus('Processing order...');
-  const name=document.getElementById('cName').value.trim();
-  const email=document.getElementById('cEmail').value.trim();
-  const phone=document.getElementById('cPhone').value.trim();
-  const address=document.getElementById('cAddress').value.trim();
-  const delivery=document.getElementById('cDelivery').value;
-  const payment=document.getElementById('cPayment').value;
-  const utr=document.getElementById('utr').value.trim();
+  // categories grid
+  function buildCategoryGrid(){
+    const grid = document.getElementById('categoryGrid'); grid.innerHTML='';
+    Object.entries(STORE.categories).forEach(([k,meta])=>{
+      if(k==='kits') return;
+      const el = document.createElement('div'); el.className='cat fade-in';
+      el.innerHTML = `<img src="${meta.img||'images/hero-device.png'}" alt="${meta.label}"><h4>${meta.label}</h4><div style="color:var(--muted)">${(meta.products||[]).length} items</div>`;
+      el.onclick = ()=>{ document.getElementById('categoryFilter').value = k; location.hash='#products'; applyAllFilters(); };
+      grid.appendChild(el);
+    });
+  }
 
-  if(!name||!email||!phone||!address){ showStatus('Please fill required fields', true); return; }
-  if(!/^\d{10}$/.test(phone)){ showStatus('Enter valid 10 digit phone', true); return; }
+  // filters & search
+  function buildFilters(){
+    const sel = document.getElementById('categoryFilter'); sel.innerHTML = '<option value="all">All Categories</option>';
+    Object.entries(STORE.categories).forEach(([k,meta])=>{ if(k==='kits') return; const o = document.createElement('option'); o.value=k; o.textContent = meta.label; sel.appendChild(o); });
+  }
+  document.getElementById('applyFilters').addEventListener('click', ()=>{ applyAllFilters(); location.hash='#products'; });
+  document.getElementById('searchInput').addEventListener('keyup', (e)=>{ if(e.key==='Enter') applyAllFilters(); });
 
-  const screenshotFile = payScreenshot.files[0];
-  if(payment==='qr'){ if(!screenshotFile){ showStatus('Please upload payment screenshot', true); return; } if(!utr){ showStatus('Please enter UTR / transaction id', true); return; } }
+  function applyAllFilters(){
+    const cat = document.getElementById('categoryFilter').value;
+    const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
+    const lo = Number(document.getElementById('minPrice').value)||0;
+    const hi = Number(document.getElementById('maxPrice').value)||9999999;
+    const list = flattenProducts().filter(p=>{
+      return (cat==='all' || p.category===cat) && (+p.price)>=lo && (+p.price)<=hi && (q==='' || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q));
+    });
+    renderProducts(list);
+  }
 
-  const sub=subtotal(); const charge=computeCharge(delivery,payment,sub); const grand=sub+charge;
-  const orderDetails = { name, email, phone, address, delivery, payment, utr, items: cart.map(i=>({ id:i.id, name:i.name, price:i.price, qty:i.qty })), subtotal: sub, charge, grand };
+  // render products & kits
+  const productsContainer = document.getElementById('productsContainer'), kitsContainer = document.getElementById('kitsContainer');
+  function renderProducts(list){
+    productsContainer.innerHTML='';
+    if(!list || list.length===0){ productsContainer.innerHTML='<div style="padding:20px;color:var(--muted)">No products found.</div>'; return; }
+    list.forEach(p=>{
+      const c = document.createElement('div'); c.className='card';
+      c.innerHTML = `<div class="product-img" style="background-image:url('${p.image||'images/hero-device.png'}')"></div><div style="padding-top:10px"><h3>${p.name}</h3><div style="color:var(--muted)">${p.description||''}</div><div style="margin-top:8px"><span class="price">₹${(+p.price||0).toLocaleString('en-IN')}</span></div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn add" data-id="${p.id}">Add to cart</button></div></div>`;
+      productsContainer.appendChild(c);
+    });
+    bindAdd();
+  }
+  function renderKits(){
+    kitsContainer.innerHTML='';
+    const kits = (STORE.categories.kits?.products)||[];
+    kits.forEach(p=>{
+      const c = document.createElement('div'); c.className='card';
+      c.innerHTML = `<div class="product-img" style="background-image:url('${p.image||'images/hero-device.png'}')"></div><div style="padding-top:10px"><h3>${p.name}</h3><div style="color:var(--muted)">${p.description||''}</div><div style="margin-top:8px"><span class="price">₹${(+p.price||0).toLocaleString('en-IN')}</span></div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn add" data-id="${p.id}">Add to cart</button></div></div>`;
+      kitsContainer.appendChild(c);
+    });
+    bindAdd();
+  }
 
-  let screenshotDataUrl=null;
-  if(screenshotFile){ try{ screenshotDataUrl = await fileToDataUrl(screenshotFile); }catch(err){ showStatus('Failed to read screenshot', true); return; } }
+  // CART logic
+  let cart = []; const cartCountEl = document.getElementById('cartCount');
+  function bindAdd(){ document.querySelectorAll('.add').forEach(b=>b.onclick=(e)=>{ const id = e.currentTarget.dataset.id; let prod=null; for(const [k,m] of Object.entries(STORE.categories)){ const f=(m.products||[]).find(x=>String(x.id)===String(id)); if(f){ prod=f; break; } } if(!prod) return; const ex = cart.find(i=>String(i.id)===String(id)); if(ex) ex.qty++; else cart.push({ id:prod.id, name:prod.name, price:+prod.price, image:prod.image, qty:1 }); updateCartUI(); toast(`${prod.name} added`); }); }
 
-  showStatus('Generating PDF invoice...');
-  let pdfRes;
-  try{ pdfRes = await generatePdf(orderDetails, screenshotDataUrl); }catch(err){ showStatus('Failed to generate PDF: '+err.message, true); console.error(err); return; }
+  function toast(msg){ const n = document.createElement('div'); n.style.cssText='position:fixed;top:90px;right:20px;background:var(--card);color:#fff;padding:10px 12px;border-radius:8px;z-index:9999'; n.textContent=msg; document.body.appendChild(n); setTimeout(()=>{ n.style.opacity='0'; n.style.transition='all .4s'; setTimeout(()=>n.remove(),400); },1300); }
 
-  // 1) Try GAS webhook if configured
-  if(GAS_WEBHOOK_URL && GAS_WEBHOOK_URL.length>10){
-    showStatus('Sending invoice to store owner via Apps Script...');
-    try{
-      const resp = await sendToGAS(GAS_WEBHOOK_URL, OWNER_EMAIL, email, pdfRes.base64, orderDetails);
-      showStatus('Order recorded. Confirmation email sent. Thank you!', false);
-    }catch(err){
-      console.error('GAS error', err);
-      showStatus('Failed to send via Apps Script: '+err.message+'. Trying EmailJS fallback...', true);
-      // fallthrough to EmailJS or download
+  function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
+  function updateCartUI(){
+    cartCountEl.textContent = cart.reduce((t,i)=>t+i.qty,0);
+    const body = document.getElementById('cartBody'); if(!body) return;
+    body.innerHTML='';
+    if(cart.length===0){ body.innerHTML='<tr><td colspan="5" style="padding:20px;color:var(--muted)">Your cart is empty.</td></tr>'; } else {
+      let sub=0;
+      cart.forEach(item=>{
+        sub += item.price * item.qty;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td style="display:flex;gap:10px;align-items:center"><div style="width:64px;height:64px;background:url('${item.image||'images/hero-device.png'}') center/cover;border-radius:8px"></div><div>${item.name}</div></td><td>₹${item.price.toLocaleString('en-IN')}</td><td><div style="display:flex;gap:6px;align-items:center"><button class="q" data-id="${item.id}" data-d="-1">-</button><input class="qi" data-id="${item.id}" type="number" min="1" value="${item.qty}" style="width:48px;text-align:center;background:transparent;border:0;color:inherit"></div></td><td>₹${(item.price*item.qty).toLocaleString('en-IN')}</td><td><button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04)" data-id="${item.id}" onclick="removeItem('${item.id}')">Remove</button></td>`;
+        body.appendChild(tr);
+      });
+      document.getElementById('sumSubtotal').textContent = '₹'+sub.toLocaleString('en-IN');
+      document.getElementById('sumTotal').textContent = '₹'+sub.toLocaleString('en-IN');
+      body.querySelectorAll('.q').forEach(b=>b.onclick=(e)=>{ const id=e.currentTarget.dataset.id, d=+e.currentTarget.dataset.d; const it=cart.find(x=>String(x.id)===String(id)); if(!it) return; it.qty += d; if(it.qty<=0) cart=cart.filter(x=>String(x.id)!==String(id)); updateCartUI(); });
+      body.querySelectorAll('.qi').forEach(inp=>inp.onchange=(e)=>{ const id=e.currentTarget.dataset.id, n=Math.max(1,parseInt(e.currentTarget.value||'1',10)); const it=cart.find(x=>String(x.id)===String(id)); if(it) it.qty=n; updateCartUI(); });
     }
   }
+  function removeItem(id){ cart = cart.filter(i=>String(i.id)!==String(id)); updateCartUI(); }
 
-  // 2) If GAS not configured or it failed, try EmailJS if configured
-  if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && EMAILJS_USER_ID && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
-    showStatus('Sending invoice by EmailJS...');
-    try{
-      await sendViaEmailJS(OWNER_EMAIL, email, pdfRes.base64, orderDetails);
-      showStatus('Order recorded. Confirmation email sent via EmailJS.', false);
-    }catch(err){
-      console.error('EmailJS error', err);
-      showStatus('EmailJS failed: '+err.message+'. Downloading PDF for manual email.', true);
-      const url = URL.createObjectURL(pdfRes.blob); const a=document.createElement('a'); a.href=url; a.download=`invoice_${Date.now()}.pdf`; a.click();
+  // router-like simple show/hide
+  const sections = ['home','categories','products','kits','cart','checkout','order-complete'];
+  function showSection(id){ sections.forEach(s=>{ const el = document.getElementById(s); if(el) el.style.display = (s===id)?'block':'none'; }); window.scrollTo({top:0,behavior:'smooth'}); if(id==='cart') updateCartUI(); if(id==='checkout') updateSummary(); }
+  window.addEventListener('hashchange', ()=> showSection((location.hash||'#home').replace('#','')));
+  if(!location.hash) location.hash = '#home'; showSection((location.hash||'#home').replace('#',''));
+
+  // quick click open cart
+  document.getElementById('openCart').onclick = ()=>{ location.hash='#cart'; };
+
+  // search/filter triggers
+  document.getElementById('categoryFilter').addEventListener('change', ()=>{ applyAllFilters(); });
+
+  // checkout summary & compute charge
+  function computeCharge(delivery, payment, sub){ if(delivery==='pickup') return 0; if(payment==='cod') return 80; return (sub<1500)?50:0; }
+  function updateSummary(){ const sub = subtotal(); const ch = computeCharge(document.getElementById('cDelivery')?.value || 'delivery', document.getElementById('cPayment')?.value || 'qr', sub); document.getElementById('sum2Subtotal').textContent = '₹'+sub.toLocaleString('en-IN'); document.getElementById('sum2Charge').textContent='₹'+ch; document.getElementById('sum2Total').textContent='₹'+(sub+ch).toLocaleString('en-IN'); const summary = document.getElementById('summaryItems'); if(summary){ summary.innerHTML=''; cart.forEach(i=>{ const r=document.createElement('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.margin='6px 0'; r.innerHTML=`<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; summary.appendChild(r); }); } }
+  function updateSummaryOnInput(){ document.getElementById('cDelivery')?.addEventListener('change', updateSummary); document.getElementById('cPayment')?.addEventListener('change', updateSummary); }
+
+  // checkout flow: generate PDF invoice + send to GAS/EmailJS or download
+  function fileToDataUrl(file){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); }); }
+
+  async function generatePdf(order, screenshotDataUrl){
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({orientation:'portrait',unit:'pt',format:'a4'}); const m=40; let y=m;
+    doc.setFontSize(16); doc.text('Creator Store — Invoice', m, y); y+=22;
+    doc.setFontSize(11); doc.text(`Date: ${new Date().toLocaleString()}`, m, y); y+=16;
+    doc.text(`Name: ${order.name}`, m, y); y+=14; doc.text(`Email: ${order.email}`, m, y); y+=14; doc.text(`Phone: ${order.phone}`, m, y); y+=14; doc.text(`Address: ${order.address}`, m, y); y+=18;
+    doc.text('Items:', m, y); y+=12;
+    doc.setFont(undefined,'bold'); doc.text('Item', m, y); doc.text('Qty', m+320, y); doc.text('Price', m+380, y); doc.setFont(undefined,'normal'); y+=12;
+    order.items.forEach(it=>{ doc.text(it.name, m, y); doc.text(String(it.qty), m+320, y); doc.text('₹'+String(it.price*it.qty), m+380, y); y+=14; if(y>700){ doc.addPage(); y=m; } });
+    y+=8; doc.text(`Subtotal: ₹${order.subtotal}`, m, y); y+=14; doc.text(`Shipping/COD: ₹${order.charge}`, m, y); y+=14; doc.text(`Grand: ₹${order.grand}`, m, y); y+=16; doc.text(`UTR/Txn: ${order.utr}`, m, y); y+=18;
+    if(screenshotDataUrl){ const props = doc.getImageProperties(screenshotDataUrl); const maxW=480; const ratio = props.width/props.height; const iw = Math.min(maxW, props.width); const ih = iw/ratio; if(y+ih>800){ doc.addPage(); y=m; } doc.text('Payment proof:', m, y); y+=12; doc.addImage(screenshotDataUrl, 'JPEG', m, y, iw, ih); y+=ih+8; }
+    const blob = doc.output('blob'); const base64 = await new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(fr.result.split(',')[1]); fr.readAsDataURL(blob); });
+    return {blob, base64};
+  }
+
+  async function sendToGAS(url, ownerEmail, buyerEmail, filename, base64, order){
+    const payload = { ownerEmail, buyerEmail, filename, fileBase64: base64, order };
+    const res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+    if(!res.ok) throw new Error('GAS response ' + res.status);
+    return res.json();
+  }
+
+  async function sendViaEmailJS(owner, buyer, base64, order){
+    if(!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) throw new Error('EmailJS not configured');
+    emailjs.init(EMAILJS_USER_ID);
+    const params = { to_email: owner, buyer_email: buyer, attachment: base64, message: `UTR:${order.utr} Grand: ₹${order.grand}` };
+    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+  }
+
+  // checkout submit handler
+  document.getElementById('checkoutForm').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    showStatus('Processing order...');
+    const name = document.getElementById('cName').value.trim();
+    const email = document.getElementById('cEmail').value.trim();
+    const phone = document.getElementById('cPhone').value.trim();
+    const address = document.getElementById('cAddress').value.trim();
+    const delivery = document.getElementById('cDelivery').value;
+    const payment = document.getElementById('cPayment').value;
+    const utr = document.getElementById('utr').value.trim();
+
+    if(!name||!email||!phone||!address){ showStatus('Please fill all required fields',true); return; }
+    if(!/^\d{10}$/.test(phone)){ showStatus('Phone must be 10 digits',true); return; }
+
+    const screenshotFile = document.getElementById('payScreenshot').files[0];
+    if(payment==='qr'){ if(!screenshotFile){ showStatus('Please upload payment screenshot',true); return; } if(!utr){ showStatus('Enter UTR/Txn ID',true); return; } }
+
+    const sub = subtotal(); const charge = computeCharge(delivery,payment,sub); const grand = sub + charge;
+    const order = { name, email, phone, address, delivery, payment, utr, items: cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty})), subtotal: sub, charge, grand };
+
+    let screenshotDataUrl = null;
+    if(screenshotFile) try{ screenshotDataUrl = await fileToDataUrl(screenshotFile); } catch(err){ showStatus('Failed to read screenshot', true); return; }
+
+    showStatus('Generating invoice PDF...');
+    let pdf;
+    try{ pdf = await generatePdf(order, screenshotDataUrl); } catch(err){ showStatus('PDF generation failed: '+err.message, true); return; }
+
+    // try GAS first (recommended)
+    if(GAS_WEBHOOK_URL && GAS_WEBHOOK_URL.length>10){
+      showStatus('Sending invoice to store owner (Apps Script)...');
+      try{
+        await sendToGAS(GAS_WEBHOOK_URL, OWNER_EMAIL, email, `invoice_${Date.now()}.pdf`, pdf.base64, order);
+        showStatus('Order received — confirmation sent. Thank you!', false);
+      }catch(err){
+        console.error('GAS failed', err); showStatus('Apps Script failed: '+err.message + ' — trying EmailJS fallback', true);
+      }
     }
-  }
 
-  // 3) If neither GAS nor EmailJS configured, download PDF
-  if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && (!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID)){
-    showStatus('Email sending not configured. Downloading invoice PDF now.');
-    const url = URL.createObjectURL(pdfRes.blob); const a=document.createElement('a'); a.href=url; a.download=`invoice_${Date.now()}.pdf`; a.click();
-  }
+    // if GAS not configured or failed, try EmailJS
+    if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && EMAILJS_USER_ID && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
+      showStatus('Sending invoice by EmailJS...');
+      try{ await sendViaEmailJS(OWNER_EMAIL, email, pdf.base64, order); showStatus('Order received — email sent via EmailJS', false); } catch(err){ console.error('EmailJS failed', err); showStatus('EmailJS failed: '+err.message + '. Downloading invoice for manual send', true); const url = URL.createObjectURL(pdf.blob); const a = document.createElement('a'); a.href=url; a.download = `invoice_${Date.now()}.pdf`; a.click(); }
+    }
 
-  // Optional: Send mailto to buyer as confirmation (no attachment)
-  try{
-    const subject=encodeURIComponent('Creator Store — Order received'); const body=encodeURIComponent(`Hi ${name},\n\nWe received your order and payment screenshot (UTR: ${utr}). We will verify payment and ship soon.\n\nOrder total: ₹${grand}\n\nThanks,\nCreator Store`); window.location.href=`mailto:${email}?subject=${subject}&body=${body}`;
-  }catch(err){ console.warn('mailto fallback failed', err); }
+    // if neither configured, download PDF
+    if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && (!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID)){
+      showStatus('No email method configured — downloading invoice now.');
+      const url = URL.createObjectURL(pdf.blob); const a = document.createElement('a'); a.href=url; a.download=`invoice_${Date.now()}.pdf`; a.click();
+    }
 
-  // clear cart (you can implement actually clearing your global cart)
-  showStatus('Order placed. We will verify and ship once payment is confirmed.', false);
-});
-</script>
+    // final UI
+    document.getElementById('ocText').textContent = `Thanks ${name}. Your order has been received and is under verification.`;
+    const ocItems = document.getElementById('ocItems'); ocItems.innerHTML=''; order.items.forEach(i=>{ const r=document.createElement('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.margin='6px 0'; r.innerHTML = `<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; ocItems.appendChild(r); });
+    showSection('order-complete');
+    // clear cart
+    cart = []; updateCartUI();
+  });
+
+  // showStatus helper
+  function showStatus(txt, isError=false){ const s = document.getElementById('status'); s.innerHTML = `<div style="padding:10px;border-radius:8px;background:${isError?'#3b0f0f':'#072e12'};color:${isError?'#ffd2d2':'#b9f0c9'}">${txt}</div>`; }
+
+  // simple search utility for console testing
+  window._debug = { STORE, cart };
+
+  </script>
 </body>
 </html>

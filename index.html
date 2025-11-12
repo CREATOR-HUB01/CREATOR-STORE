@@ -1,174 +1,174 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CREATOR STORE — Premium Electronics & Kits</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CREATOR STORE — Premium Electronics & Kits</title>
 
-  <!-- icons & fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- jsPDF for invoice -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- EmailJS (optional fallback) -->
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<!-- jsPDF for invoice -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- EmailJS optional SDK -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 
-  <style>
-    /* ---------- DESIGN: luxurious dark glass theme ---------- */
-    :root{
-      --bg:#061025;
-      --card:rgba(255,255,255,0.04);
-      --glass:rgba(255,255,255,0.03);
-      --accent:#ff7f00;
-      --muted:#9fb0c9;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef8;background:linear-gradient(180deg,#030513 0%,#061025 100%);-webkit-font-smoothing:antialiased}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1200px;margin:0 auto;padding:24px}
+<style>
+  :root{
+    --bg:#050917;
+    --card:rgba(255,255,255,0.03);
+    --glass:rgba(255,255,255,0.02);
+    --accent:#FF7F00;
+    --accent-2:#FFD08A;
+    --muted:#9fb0c9;
+    --positive:#2dd36f;
+    --danger:#ff5c5c;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#030318 0%,#050917 60%);color:#e6eef8;-webkit-font-smoothing:antialiased}
+  .container{max-width:1200px;margin:0 auto;padding:28px}
 
-    /* header */
-    header{position:sticky;top:10px;z-index:60;padding:8px 0}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{height:40px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
-    .brand h2{margin:0;font-size:1.2rem;letter-spacing:.6px}
-    nav ul{list-style:none;display:flex;gap:14px;margin:0;padding:0;align-items:center}
-    nav a{padding:8px 12px;border-radius:8px;opacity:.95}
-    nav a:hover{background:rgba(255,255,255,0.03)}
+  /* Header */
+  header{position:sticky;top:12px;z-index:100;background:linear-gradient(180deg, rgba(2,6,23,0.25), transparent);backdrop-filter: blur(6px);padding:8px;border-radius:12px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand img{height:44px;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+  nav ul{list-style:none;display:flex;gap:12px;margin:0;padding:0;align-items:center}
+  nav a{color:var(--muted);padding:8px 12px;border-radius:8px;text-decoration:none}
+  nav a.active, nav a:hover{background:rgba(255,255,255,0.02);color:#fff}
 
-    /* hero */
-    .hero{position:relative;padding:48px 0 28px;overflow:hidden;border-radius:12px}
-    .hero .bg{position:absolute;inset:0;background:radial-gradient(1200px 400px at 10% 20%, rgba(255,127,0,0.06), transparent 5%), linear-gradient(120deg,#071430 0%, #061025 60%);filter:blur(20px);transform:translateZ(0)}
-    .hero .particles{position:absolute;inset:0;pointer-events:none}
-    .hero-inner{position:relative;display:flex;gap:28px;align-items:center}
-    .hero-left{flex:1;max-width:720px}
-    .kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg,rgba(255,127,0,0.14),rgba(255,127,0,0.06));font-weight:700;color:var(--accent)}
-    h1{font-size:2.4rem;margin:12px 0;line-height:1.02;letter-spacing:.6px}
-    p.lead{color:var(--muted);margin:0 0 16px}
+  /* Hero */
+  .hero{position:relative;overflow:hidden;border-radius:14px;padding:44px;margin-top:12px}
+  .hero .gradient{position:absolute;inset:0;background:linear-gradient(120deg,#06112a 0%, #08112a 30%, #0b1836 60%, rgba(2,6,23,0.4) 100%);filter:blur(26px);transform:scale(1.2);opacity:0.95}
+  .hero-inner{position:relative;display:flex;gap:28px;align-items:center}
+  .kicker{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:linear-gradient(90deg, rgba(255,127,0,0.12), rgba(255,127,0,0.06));color:var(--accent);font-weight:700}
+  h1{font-size:2.5rem;margin:12px 0 6px;line-height:1.02}
+  p.lead{color:var(--muted);max-width:700px}
+  .hero-device{width:360px;height:260px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;box-shadow:0 40px 80px rgba(2,6,23,0.7)}
+  .hero-device img{width:82%;transform:translateY(-6px)}
 
-    /* hero device */
-    .hero-device{width:340px;height:260px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));display:flex;align-items:center;justify-content:center;box-shadow:0 30px 60px rgba(2,6,23,0.6)}
-    .hero-device img{width:80%;filter:drop-shadow(0 20px 40px rgba(2,6,23,0.6))}
+  /* Animations: entry */
+  .enter { opacity:0; transform:translateY(14px) scale(.995); animation:enter .72s forwards ease-out; }
+  .enter.delay { animation-delay: .15s; }
+  @keyframes enter { to { opacity:1; transform:none; } }
 
-    /* layout */
-    section{padding:28px 0}
-    .section-title{font-size:1.2rem;margin:0 0 12px}
-    .grid{display:grid;gap:16px}
+  /* Grid & cards */
+  section{padding:28px 0}
+  .section-title{font-size:1.1rem;margin:0 0 12px}
+  .grid{display:grid;gap:16px}
+  .categories.grid{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+  .cat{background:var(--card);padding:12px;border-radius:12px;cursor:pointer;transition:transform .28s, box-shadow .28s}
+  .cat:hover{transform:translateY(-8px);box-shadow:0 26px 60px rgba(2,6,23,0.6)}
+  .cat img{width:100%;height:96px;object-fit:cover;border-radius:8px}
+  .cat h4{margin:8px 0 4px}
 
-    /* categories */
-    .categories.grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
-    .cat{background:var(--card);padding:12px;border-radius:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;cursor:pointer;transition:transform .28s, box-shadow .28s}
-    .cat:hover{transform:translateY(-8px);box-shadow:0 30px 50px rgba(2,6,23,0.6)}
-    .cat img{width:100%;height:90px;object-fit:cover;border-radius:8px}
-    .cat h4{margin:0;font-size:1rem}
+  .products.grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px;border-radius:14px;overflow:hidden;transition:transform .25s, box-shadow .25s}
+  .card:hover{transform:translateY(-8px)}
+  .product-img{height:150px;background:#071428;border-radius:10px;background-size:cover;background-position:center}
+  .card h3{margin:10px 0 4px;font-size:1rem}
+  .price{color:var(--accent);font-weight:800}
 
-    /* products */
-    .products.grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:12px;box-shadow:0 18px 40px rgba(2,6,23,0.6);transition:transform .25s}
-    .card:hover{transform:translateY(-8px)}
-    .product-img{height:150px;background:#071428;border-radius:10px;background-size:cover;background-position:center;overflow:hidden}
-    .card h3{margin:8px 0 6px;font-size:1rem}
-    .price{color:var(--accent);font-weight:800}
+  /* controls */
+  .controls{display:flex;gap:10px;align-items:center}
+  .controls input,.controls select{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
 
-    /* search & filter */
-    .controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-    .controls input, .controls select{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+  /* cart button */
+  .cart-btn{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#111;cursor:pointer;font-weight:800}
+  .cart-count{background:#111;color:#fff;padding:4px 8px;border-radius:999px;font-weight:700}
 
-    /* cart drawer */
-    .cart-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;background:var(--accent);color:#111;border-radius:999px;font-weight:800;cursor:pointer}
-    .cart-count{background:#111;padding:4px 8px;border-radius:999px;color:#fff}
+  /* cart section */
+  .cart-wrap{display:grid;grid-template-columns:2fr 360px;gap:18px}
+  .table{width:100%;border-collapse:collapse}
+  .table th,.table td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.02);text-align:left}
+  .qty-control button{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:6px;border-radius:6px;color:inherit;width:28px}
 
-    /* cart page */
-    .cart-wrap{display:grid;grid-template-columns:2fr 360px;gap:18px}
-    .table{width:100%;border-collapse:collapse}
-    .table th,.table td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.02);text-align:left}
+  /* checkout */
+  .form{background:var(--glass);padding:12px;border-radius:12px}
+  .file-label{font-size:.9rem;color:var(--muted);margin-top:8px}
 
-    /* checkout + invoice */
-    .form{background:var(--glass);padding:12px;border-radius:12px}
+  /* order complete animation */
+  .success-anim { display:flex;align-items:center;gap:12px;padding:18px;border-radius:12px;background:linear-gradient(90deg,#052a12,#06311a);color:var(--positive);box-shadow:0 20px 60px rgba(2,6,23,0.6); }
+  .pulse { width:56px;height:56px; border-radius:50%; background:linear-gradient(90deg,var(--positive),#18e288); display:flex;align-items:center;justify-content:center; animation:pop 700ms ease-out; }
+  @keyframes pop { from { transform:scale(.6); opacity:0 } to { transform:none; opacity:1 } }
 
-    /* footer */
-    footer{padding:22px 0;color:var(--muted);font-size:.9rem;text-align:center}
+  /* toasts */
+  .toast { position:fixed; right:20px; top:90px; background:rgba(0,0,0,0.6); padding:10px 12px; border-radius:8px; color:#fff; box-shadow:0 12px 40px rgba(0,0,0,0.6); z-index:9999; }
 
-    /* subtle animations */
-    .fade-in{opacity:0;transform:translateY(8px);animation:fadeIn .7s forwards}
-    @keyframes fadeIn{to{opacity:1;transform:none}}
-
-    /* responsive */
-    @media (max-width:900px){
-      .hero-inner{flex-direction:column;text-align:center}
-      .cart-wrap{grid-template-columns:1fr}
-      .products.grid{grid-template-columns:1fr 1fr}
-    }
-
-  </style>
+  /* responsive */
+  @media (max-width:920px){
+    .hero-inner{flex-direction:column;text-align:center}
+    .cart-wrap{grid-template-columns:1fr}
+    .products.grid{grid-template-columns:1fr 1fr}
+  }
+</style>
 </head>
 <body>
   <div class="container">
-    <header>
+    <header class="enter">
       <div class="nav">
         <div class="brand">
-          <img src="images/logo.png" alt="logo">
+          <img id="logoImg" src="images/logo.png" alt="logo">
           <div>
-            <h2>CREATOR STORE</h2>
-            <div style="font-size:.85rem;color:var(--muted)">Premium components & kits</div>
+            <div style="font-weight:800">CREATOR STORE</div>
+            <div style="font-size:.85rem;color:var(--muted)">Premium electronics & maker kits</div>
           </div>
         </div>
 
         <div style="display:flex;align-items:center;gap:12px">
           <nav>
             <ul>
-              <li><a href="#home">Home</a></li>
-              <li><a href="#products">Products</a></li>
-              <li><a href="#categories">Categories</a></li>
-              <li><a href="#kits">Kits</a></li>
-              <li><a href="#about">About</a></li>
+              <li><a href="#home" class="nav-link active">Home</a></li>
+              <li><a href="#products" class="nav-link">Products</a></li>
+              <li><a href="#categories" class="nav-link">Categories</a></li>
+              <li><a href="#kits" class="nav-link">Kits</a></li>
+              <li><a href="#about" class="nav-link">About</a></li>
             </ul>
           </nav>
-          <div class="cart-btn" id="openCart"> <i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-count" id="cartCount">0</span></div>
+
+          <div class="cart-btn" id="openCartBtn"><i class="fa-solid fa-cart-shopping"></i> Cart <span class="cart-count" id="cartCount">0</span></div>
         </div>
       </div>
     </header>
 
     <!-- HERO -->
-    <section id="home" class="hero">
-      <div class="bg"></div>
-      <div class="particles" id="particles"></div>
-      <div class="hero-inner fade-in">
+    <section id="home" class="hero enter delay">
+      <div class="gradient"></div>
+      <div class="hero-inner">
         <div class="hero-left">
-          <div class="kicker">Limited edition • Free shipping over ₹1500</div>
-          <h1>Premium parts for makers, students and R&D teams</h1>
-          <p class="lead">Hand-picked microcontrollers, sensors, power modules and development kits. Clean inventory, fast shipping and technical support.</p>
-          <div style="margin-top:14px;display:flex;gap:12px">
-            <a href="#products" class="btn" style="background:var(--accent);color:#111">Shop Now</a>
-            <a href="#about" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)">Learn More</a>
+          <div class="kicker">Curated • Genuine • Fast shipping</div>
+          <h1>Everything you need to build the future — from prototyping to production</h1>
+          <p class="lead">High-quality microcontrollers, sensors, power modules and kits for students, hobbyists and professionals. Explore curated product lines and ready-to-use kits.</p>
+          <div style="margin-top:18px;display:flex;gap:12px">
+            <a href="#products" class="cart-btn" style="background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#111">Shop Now</a>
+            <a href="#about" class="cart-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff">About Us</a>
           </div>
         </div>
-        <div class="hero-device fade-in">
+
+        <div class="hero-device">
           <img src="images/hero-device.png" alt="device">
         </div>
       </div>
     </section>
 
     <!-- CATEGORIES -->
-    <section id="categories">
+    <section id="categories" class="enter">
       <h3 class="section-title">Categories</h3>
       <div class="grid categories" id="categoryGrid"></div>
     </section>
 
     <!-- PRODUCTS -->
-    <section id="products">
-      <div style="display:flex;justify-content:space-between;align-items:center">
+    <section id="products" class="enter">
+      <div style="display:flex;align-items:center;justify-content:space-between">
         <h3 class="section-title">Products</h3>
         <div class="controls">
           <input id="searchInput" placeholder="Search components...">
-          <select id="categoryFilter"><option value="all">All</option></select>
+          <select id="categoryFilter"><option value="all">All Categories</option></select>
           <input id="minPrice" type="number" placeholder="Min">
           <input id="maxPrice" type="number" placeholder="Max">
-          <button id="applyFilters" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04)">Apply</button>
+          <button id="applyFilters" class="cart-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff">Apply</button>
         </div>
       </div>
 
@@ -176,13 +176,13 @@
     </section>
 
     <!-- KITS -->
-    <section id="kits">
+    <section id="kits" class="enter">
       <h3 class="section-title">Kits</h3>
       <div class="grid products" id="kitsContainer"></div>
     </section>
 
-    <!-- CART -->
-    <section id="cart" style="display:none">
+    <!-- CART (page) -->
+    <section id="cart" style="display:none" class="enter">
       <h3 class="section-title">Your Cart</h3>
       <div class="cart-wrap">
         <div>
@@ -191,17 +191,21 @@
             <tbody id="cartBody"><tr><td colspan="5" style="padding:20px;color:var(--muted)">Your cart is empty.</td></tr></tbody>
           </table>
         </div>
+
         <aside style="background:var(--glass);padding:12px;border-radius:12px">
           <div style="display:flex;justify-content:space-between"><strong>Subtotal</strong><strong id="sumSubtotal">₹0</strong></div>
           <div style="display:flex;justify-content:space-between;margin-top:8px"><span>Shipping/COD</span><strong id="sumCharge">₹0</strong></div>
           <div style="display:flex;justify-content:space-between;margin-top:8px;font-weight:800"><span>Grand Total</span><strong id="sumTotal">₹0</strong></div>
-          <div style="margin-top:12px;display:flex;gap:10px"><a href="#products" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04)">Continue</a><a href="#checkout" class="btn">Checkout</a></div>
+          <div style="margin-top:12px;display:flex;gap:10px">
+            <a href="#products" class="cart-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff">Continue Shopping</a>
+            <a href="#checkout" class="cart-btn">Checkout</a>
+          </div>
         </aside>
       </div>
     </section>
 
-    <!-- CHECKOUT (QR flow) -->
-    <section id="checkout" style="display:none">
+    <!-- CHECKOUT -->
+    <section id="checkout" style="display:none" class="enter">
       <h3 class="section-title">Checkout</h3>
       <div style="display:grid;grid-template-columns:1fr 360px;gap:18px">
         <form id="checkoutForm" class="form">
@@ -216,7 +220,7 @@
             <label>Scan & Pay QR</label>
             <div style="background:var(--glass);padding:12px;border-radius:10px;text-align:center">
               <img id="qrImage" src="images/qr-sample.png" alt="QR" style="max-width:240px;border-radius:8px">
-              <p class="small">Scan this QR with UPI / bank app and pay</p>
+              <p class="small" style="color:var(--muted)">Scan this QR with UPI / bank app and pay</p>
             </div>
 
             <label class="file-label">Upload payment screenshot *</label>
@@ -226,7 +230,7 @@
             <input id="utr" placeholder="Enter UTR / transaction id">
           </div>
 
-          <div style="margin-top:14px"><button class="btn" type="submit">Pay / Place Order</button></div>
+          <div style="margin-top:14px"><button class="cart-btn" type="submit">Pay / Place Order</button></div>
         </form>
 
         <div class="form">
@@ -242,268 +246,334 @@
     </section>
 
     <!-- ORDER COMPLETE -->
-    <section id="order-complete" style="display:none">
+    <section id="order-complete" style="display:none" class="enter">
       <div class="form">
-        <h3><i class="fa-solid fa-circle-check" style="color:#2e7d32"></i> Order Received</h3>
-        <p id="ocText">Thank you — your order has been received and is under verification.</p>
-        <div id="ocItems"></div>
-        <div style="margin-top:10px"><a id="downloadInvoice" class="btn">Download Invoice</a><a href="#home" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);margin-left:8px">Home</a></div>
+        <div class="success-anim">
+          <div class="pulse"><i class="fa-solid fa-check" style="color:#01150a"></i></div>
+          <div>
+            <div style="font-weight:800">Order placed</div>
+            <div style="color:var(--muted)">We received your order and are verifying payment. You will receive a confirmation email shortly.</div>
+          </div>
+        </div>
+        <div style="margin-top:14px" id="ocItems"></div>
+        <div style="margin-top:12px"><a id="downloadInvoice" class="cart-btn">Download Invoice</a> <a href="#home" class="cart-btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff">Home</a></div>
       </div>
     </section>
 
-    <footer>
+    <footer style="margin-top:28px;text-align:center;color:var(--muted);font-size:.9rem">
       © <span id="year"></span> Creator Store — Customer Service • Shipping Policy • Return Policy • FAQ • Terms & Privacy
     </footer>
   </div>
 
-  <script>
-  /* =========================
-     CONFIG (no secrets here)
-     - Put your GAS webhook URL (recommended) or EmailJS IDs
-     - Do NOT place private API keys in this file
-     ========================= */
-  const GAS_WEBHOOK_URL = ''; // optional: Google Apps Script URL (recommended)
-  const EMAILJS_USER_ID = ''; // optional
-  const EMAILJS_SERVICE_ID = ''; // optional
-  const EMAILJS_TEMPLATE_ID = ''; // optional
-  const OWNER_EMAIL = 'owner@example.com'; // change to your email
-  /* ========================= */
+<script>
+/* ======================
+  CONFIG (edit before testing)
+  - Replace GAS_WEBHOOK_URL with your Google Apps Script web app URL for email sending (recommended)
+  - Or fill EMAILJS_* values if you prefer EmailJS
+  - Set OWNER_EMAIL where you want PDFs sent
+  => DO NOT put private API secrets here.
+====================== */
+const GAS_WEBHOOK_URL = ''; // e.g. 'https://script.google.com/macros/s/AKfycbx.../exec'
+const EMAILJS_USER_ID = ''; // optional
+const EMAILJS_SERVICE_ID = ''; // optional
+const EMAILJS_TEMPLATE_ID = ''; // optional
+const OWNER_EMAIL = 'owner@example.com';
+/* ===================== */
 
-  document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  // particles (luxury floating)
-  (function createParticles(){
-    const cont = document.getElementById('particles');
-    for(let i=0;i<22;i++){
-      const d = document.createElement('div');
-      d.style.position='absolute';
-      d.style.width=(6+Math.random()*22)+'px';
-      d.style.height=d.style.width;
-      d.style.left = Math.random()*100+'%';
-      d.style.top = Math.random()*100+'%';
-      d.style.borderRadius='50%';
-      d.style.background = `rgba(255,255,255,${0.02 + Math.random()*0.06})`;
-      d.style.filter='blur(8px)';
-      d.style.transform = `translate3d(0,0,0)`;
-      d.style.animation = `float${i%4} ${6 + Math.random()*12}s linear infinite`;
-      cont.appendChild(d);
-    }
-    const s = document.createElement('style');
-    s.innerHTML = `@keyframes float0{0%{transform:translateY(0)}50%{transform:translateY(-30px)}100%{transform:translateY(0)}}@keyframes float1{0%{transform:translateY(0)}50%{transform:translateY(-10px)}100%{transform:translateY(0)}}@keyframes float2{0%{transform:translateY(0)}50%{transform:translateY(-60px)}100%{transform:translateY(0)}}@keyframes float3{0%{transform:translateY(0)}50%{transform:translateY(-20px)}100%{transform:translateY(0)}}`;
-    document.head.appendChild(s);
-  })();
+/* --- utilities & UI --- */
+function $(s){ return document.querySelector(s); }
+function $all(s){ return Array.from(document.querySelectorAll(s)); }
+function toast(msg, ms=1600){ const t = document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>{ t.style.opacity='0'; t.style.transition='all .3s'; setTimeout(()=>t.remove(),300); }, ms); }
 
-  // ========== Load product catalog from products.json ==========
-  let STORE = { logo:'images/logo.png', categories:{} };
-  fetch('products.json').then(r=>r.json()).then(data=>{ STORE=data; initShop(); }).catch(err=>{ console.error('products.json load failed',err); });
+/* --- persistent cart in localStorage --- */
+let cart = JSON.parse(localStorage.getItem('creator_cart')||'[]');
+function saveCart(){ localStorage.setItem('creator_cart', JSON.stringify(cart)); }
 
-  function initShop(){
-    applyLogo();
-    buildCategoryGrid();
-    buildFilters();
-    renderProducts(flattenProducts());
-    renderKits();
-  }
+/* --- load catalog from products.json --- */
+let STORE = { logo:'images/logo.png', categories:{} };
+fetch('products.json').then(r=>r.json()).then(data=>{ STORE=data; initShop(); }).catch(err=>{ console.error('failed loading products.json',err); toast('Failed to load product catalog'); });
 
-  function applyLogo(){ if(!STORE.logo) return; document.querySelector('.brand img').src = STORE.logo; }
+function initShop(){
+  $('#logoImg').src = STORE.logo || 'images/logo.png';
+  buildCategories();
+  buildFilters();
+  renderProducts(flattenProducts());
+  renderKits();
+  updateCartUI();
+}
 
-  function flattenProducts(){ const arr=[]; Object.entries(STORE.categories).forEach(([k,meta])=>{ if(k==='kits') return; (meta.products||[]).forEach(p=>arr.push({...p, category:k})); }); return arr; }
+/* flatten */
+function flattenProducts(){ const arr=[]; Object.entries(STORE.categories).forEach(([k,meta])=>{ if(k==='kits') return; (meta.products||[]).forEach(p=>arr.push({...p, category:k})); }); return arr; }
 
-  // categories grid
-  function buildCategoryGrid(){
-    const grid = document.getElementById('categoryGrid'); grid.innerHTML='';
-    Object.entries(STORE.categories).forEach(([k,meta])=>{
-      if(k==='kits') return;
-      const el = document.createElement('div'); el.className='cat fade-in';
-      el.innerHTML = `<img src="${meta.img||'images/hero-device.png'}" alt="${meta.label}"><h4>${meta.label}</h4><div style="color:var(--muted)">${(meta.products||[]).length} items</div>`;
-      el.onclick = ()=>{ document.getElementById('categoryFilter').value = k; location.hash='#products'; applyAllFilters(); };
-      grid.appendChild(el);
-    });
-  }
-
-  // filters & search
-  function buildFilters(){
-    const sel = document.getElementById('categoryFilter'); sel.innerHTML = '<option value="all">All Categories</option>';
-    Object.entries(STORE.categories).forEach(([k,meta])=>{ if(k==='kits') return; const o = document.createElement('option'); o.value=k; o.textContent = meta.label; sel.appendChild(o); });
-  }
-  document.getElementById('applyFilters').addEventListener('click', ()=>{ applyAllFilters(); location.hash='#products'; });
-  document.getElementById('searchInput').addEventListener('keyup', (e)=>{ if(e.key==='Enter') applyAllFilters(); });
-
-  function applyAllFilters(){
-    const cat = document.getElementById('categoryFilter').value;
-    const q = (document.getElementById('searchInput').value||'').toLowerCase().trim();
-    const lo = Number(document.getElementById('minPrice').value)||0;
-    const hi = Number(document.getElementById('maxPrice').value)||9999999;
-    const list = flattenProducts().filter(p=>{
-      return (cat==='all' || p.category===cat) && (+p.price)>=lo && (+p.price)<=hi && (q==='' || p.name.toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q));
-    });
-    renderProducts(list);
-  }
-
-  // render products & kits
-  const productsContainer = document.getElementById('productsContainer'), kitsContainer = document.getElementById('kitsContainer');
-  function renderProducts(list){
-    productsContainer.innerHTML='';
-    if(!list || list.length===0){ productsContainer.innerHTML='<div style="padding:20px;color:var(--muted)">No products found.</div>'; return; }
-    list.forEach(p=>{
-      const c = document.createElement('div'); c.className='card';
-      c.innerHTML = `<div class="product-img" style="background-image:url('${p.image||'images/hero-device.png'}')"></div><div style="padding-top:10px"><h3>${p.name}</h3><div style="color:var(--muted)">${p.description||''}</div><div style="margin-top:8px"><span class="price">₹${(+p.price||0).toLocaleString('en-IN')}</span></div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn add" data-id="${p.id}">Add to cart</button></div></div>`;
-      productsContainer.appendChild(c);
-    });
-    bindAdd();
-  }
-  function renderKits(){
-    kitsContainer.innerHTML='';
-    const kits = (STORE.categories.kits?.products)||[];
-    kits.forEach(p=>{
-      const c = document.createElement('div'); c.className='card';
-      c.innerHTML = `<div class="product-img" style="background-image:url('${p.image||'images/hero-device.png'}')"></div><div style="padding-top:10px"><h3>${p.name}</h3><div style="color:var(--muted)">${p.description||''}</div><div style="margin-top:8px"><span class="price">₹${(+p.price||0).toLocaleString('en-IN')}</span></div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn add" data-id="${p.id}">Add to cart</button></div></div>`;
-      kitsContainer.appendChild(c);
-    });
-    bindAdd();
-  }
-
-  // CART logic
-  let cart = []; const cartCountEl = document.getElementById('cartCount');
-  function bindAdd(){ document.querySelectorAll('.add').forEach(b=>b.onclick=(e)=>{ const id = e.currentTarget.dataset.id; let prod=null; for(const [k,m] of Object.entries(STORE.categories)){ const f=(m.products||[]).find(x=>String(x.id)===String(id)); if(f){ prod=f; break; } } if(!prod) return; const ex = cart.find(i=>String(i.id)===String(id)); if(ex) ex.qty++; else cart.push({ id:prod.id, name:prod.name, price:+prod.price, image:prod.image, qty:1 }); updateCartUI(); toast(`${prod.name} added`); }); }
-
-  function toast(msg){ const n = document.createElement('div'); n.style.cssText='position:fixed;top:90px;right:20px;background:var(--card);color:#fff;padding:10px 12px;border-radius:8px;z-index:9999'; n.textContent=msg; document.body.appendChild(n); setTimeout(()=>{ n.style.opacity='0'; n.style.transition='all .4s'; setTimeout(()=>n.remove(),400); },1300); }
-
-  function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
-  function updateCartUI(){
-    cartCountEl.textContent = cart.reduce((t,i)=>t+i.qty,0);
-    const body = document.getElementById('cartBody'); if(!body) return;
-    body.innerHTML='';
-    if(cart.length===0){ body.innerHTML='<tr><td colspan="5" style="padding:20px;color:var(--muted)">Your cart is empty.</td></tr>'; } else {
-      let sub=0;
-      cart.forEach(item=>{
-        sub += item.price * item.qty;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td style="display:flex;gap:10px;align-items:center"><div style="width:64px;height:64px;background:url('${item.image||'images/hero-device.png'}') center/cover;border-radius:8px"></div><div>${item.name}</div></td><td>₹${item.price.toLocaleString('en-IN')}</td><td><div style="display:flex;gap:6px;align-items:center"><button class="q" data-id="${item.id}" data-d="-1">-</button><input class="qi" data-id="${item.id}" type="number" min="1" value="${item.qty}" style="width:48px;text-align:center;background:transparent;border:0;color:inherit"></div></td><td>₹${(item.price*item.qty).toLocaleString('en-IN')}</td><td><button class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.04)" data-id="${item.id}" onclick="removeItem('${item.id}')">Remove</button></td>`;
-        body.appendChild(tr);
-      });
-      document.getElementById('sumSubtotal').textContent = '₹'+sub.toLocaleString('en-IN');
-      document.getElementById('sumTotal').textContent = '₹'+sub.toLocaleString('en-IN');
-      body.querySelectorAll('.q').forEach(b=>b.onclick=(e)=>{ const id=e.currentTarget.dataset.id, d=+e.currentTarget.dataset.d; const it=cart.find(x=>String(x.id)===String(id)); if(!it) return; it.qty += d; if(it.qty<=0) cart=cart.filter(x=>String(x.id)!==String(id)); updateCartUI(); });
-      body.querySelectorAll('.qi').forEach(inp=>inp.onchange=(e)=>{ const id=e.currentTarget.dataset.id, n=Math.max(1,parseInt(e.currentTarget.value||'1',10)); const it=cart.find(x=>String(x.id)===String(id)); if(it) it.qty=n; updateCartUI(); });
-    }
-  }
-  function removeItem(id){ cart = cart.filter(i=>String(i.id)!==String(id)); updateCartUI(); }
-
-  // router-like simple show/hide
-  const sections = ['home','categories','products','kits','cart','checkout','order-complete'];
-  function showSection(id){ sections.forEach(s=>{ const el = document.getElementById(s); if(el) el.style.display = (s===id)?'block':'none'; }); window.scrollTo({top:0,behavior:'smooth'}); if(id==='cart') updateCartUI(); if(id==='checkout') updateSummary(); }
-  window.addEventListener('hashchange', ()=> showSection((location.hash||'#home').replace('#','')));
-  if(!location.hash) location.hash = '#home'; showSection((location.hash||'#home').replace('#',''));
-
-  // quick click open cart
-  document.getElementById('openCart').onclick = ()=>{ location.hash='#cart'; };
-
-  // search/filter triggers
-  document.getElementById('categoryFilter').addEventListener('change', ()=>{ applyAllFilters(); });
-
-  // checkout summary & compute charge
-  function computeCharge(delivery, payment, sub){ if(delivery==='pickup') return 0; if(payment==='cod') return 80; return (sub<1500)?50:0; }
-  function updateSummary(){ const sub = subtotal(); const ch = computeCharge(document.getElementById('cDelivery')?.value || 'delivery', document.getElementById('cPayment')?.value || 'qr', sub); document.getElementById('sum2Subtotal').textContent = '₹'+sub.toLocaleString('en-IN'); document.getElementById('sum2Charge').textContent='₹'+ch; document.getElementById('sum2Total').textContent='₹'+(sub+ch).toLocaleString('en-IN'); const summary = document.getElementById('summaryItems'); if(summary){ summary.innerHTML=''; cart.forEach(i=>{ const r=document.createElement('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.margin='6px 0'; r.innerHTML=`<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; summary.appendChild(r); }); } }
-  function updateSummaryOnInput(){ document.getElementById('cDelivery')?.addEventListener('change', updateSummary); document.getElementById('cPayment')?.addEventListener('change', updateSummary); }
-
-  // checkout flow: generate PDF invoice + send to GAS/EmailJS or download
-  function fileToDataUrl(file){ return new Promise((res,rej)=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); }); }
-
-  async function generatePdf(order, screenshotDataUrl){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({orientation:'portrait',unit:'pt',format:'a4'}); const m=40; let y=m;
-    doc.setFontSize(16); doc.text('Creator Store — Invoice', m, y); y+=22;
-    doc.setFontSize(11); doc.text(`Date: ${new Date().toLocaleString()}`, m, y); y+=16;
-    doc.text(`Name: ${order.name}`, m, y); y+=14; doc.text(`Email: ${order.email}`, m, y); y+=14; doc.text(`Phone: ${order.phone}`, m, y); y+=14; doc.text(`Address: ${order.address}`, m, y); y+=18;
-    doc.text('Items:', m, y); y+=12;
-    doc.setFont(undefined,'bold'); doc.text('Item', m, y); doc.text('Qty', m+320, y); doc.text('Price', m+380, y); doc.setFont(undefined,'normal'); y+=12;
-    order.items.forEach(it=>{ doc.text(it.name, m, y); doc.text(String(it.qty), m+320, y); doc.text('₹'+String(it.price*it.qty), m+380, y); y+=14; if(y>700){ doc.addPage(); y=m; } });
-    y+=8; doc.text(`Subtotal: ₹${order.subtotal}`, m, y); y+=14; doc.text(`Shipping/COD: ₹${order.charge}`, m, y); y+=14; doc.text(`Grand: ₹${order.grand}`, m, y); y+=16; doc.text(`UTR/Txn: ${order.utr}`, m, y); y+=18;
-    if(screenshotDataUrl){ const props = doc.getImageProperties(screenshotDataUrl); const maxW=480; const ratio = props.width/props.height; const iw = Math.min(maxW, props.width); const ih = iw/ratio; if(y+ih>800){ doc.addPage(); y=m; } doc.text('Payment proof:', m, y); y+=12; doc.addImage(screenshotDataUrl, 'JPEG', m, y, iw, ih); y+=ih+8; }
-    const blob = doc.output('blob'); const base64 = await new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(fr.result.split(',')[1]); fr.readAsDataURL(blob); });
-    return {blob, base64};
-  }
-
-  async function sendToGAS(url, ownerEmail, buyerEmail, filename, base64, order){
-    const payload = { ownerEmail, buyerEmail, filename, fileBase64: base64, order };
-    const res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
-    if(!res.ok) throw new Error('GAS response ' + res.status);
-    return res.json();
-  }
-
-  async function sendViaEmailJS(owner, buyer, base64, order){
-    if(!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) throw new Error('EmailJS not configured');
-    emailjs.init(EMAILJS_USER_ID);
-    const params = { to_email: owner, buyer_email: buyer, attachment: base64, message: `UTR:${order.utr} Grand: ₹${order.grand}` };
-    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-  }
-
-  // checkout submit handler
-  document.getElementById('checkoutForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    showStatus('Processing order...');
-    const name = document.getElementById('cName').value.trim();
-    const email = document.getElementById('cEmail').value.trim();
-    const phone = document.getElementById('cPhone').value.trim();
-    const address = document.getElementById('cAddress').value.trim();
-    const delivery = document.getElementById('cDelivery').value;
-    const payment = document.getElementById('cPayment').value;
-    const utr = document.getElementById('utr').value.trim();
-
-    if(!name||!email||!phone||!address){ showStatus('Please fill all required fields',true); return; }
-    if(!/^\d{10}$/.test(phone)){ showStatus('Phone must be 10 digits',true); return; }
-
-    const screenshotFile = document.getElementById('payScreenshot').files[0];
-    if(payment==='qr'){ if(!screenshotFile){ showStatus('Please upload payment screenshot',true); return; } if(!utr){ showStatus('Enter UTR/Txn ID',true); return; } }
-
-    const sub = subtotal(); const charge = computeCharge(delivery,payment,sub); const grand = sub + charge;
-    const order = { name, email, phone, address, delivery, payment, utr, items: cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty})), subtotal: sub, charge, grand };
-
-    let screenshotDataUrl = null;
-    if(screenshotFile) try{ screenshotDataUrl = await fileToDataUrl(screenshotFile); } catch(err){ showStatus('Failed to read screenshot', true); return; }
-
-    showStatus('Generating invoice PDF...');
-    let pdf;
-    try{ pdf = await generatePdf(order, screenshotDataUrl); } catch(err){ showStatus('PDF generation failed: '+err.message, true); return; }
-
-    // try GAS first (recommended)
-    if(GAS_WEBHOOK_URL && GAS_WEBHOOK_URL.length>10){
-      showStatus('Sending invoice to store owner (Apps Script)...');
-      try{
-        await sendToGAS(GAS_WEBHOOK_URL, OWNER_EMAIL, email, `invoice_${Date.now()}.pdf`, pdf.base64, order);
-        showStatus('Order received — confirmation sent. Thank you!', false);
-      }catch(err){
-        console.error('GAS failed', err); showStatus('Apps Script failed: '+err.message + ' — trying EmailJS fallback', true);
-      }
-    }
-
-    // if GAS not configured or failed, try EmailJS
-    if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && EMAILJS_USER_ID && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
-      showStatus('Sending invoice by EmailJS...');
-      try{ await sendViaEmailJS(OWNER_EMAIL, email, pdf.base64, order); showStatus('Order received — email sent via EmailJS', false); } catch(err){ console.error('EmailJS failed', err); showStatus('EmailJS failed: '+err.message + '. Downloading invoice for manual send', true); const url = URL.createObjectURL(pdf.blob); const a = document.createElement('a'); a.href=url; a.download = `invoice_${Date.now()}.pdf`; a.click(); }
-    }
-
-    // if neither configured, download PDF
-    if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && (!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID)){
-      showStatus('No email method configured — downloading invoice now.');
-      const url = URL.createObjectURL(pdf.blob); const a = document.createElement('a'); a.href=url; a.download=`invoice_${Date.now()}.pdf`; a.click();
-    }
-
-    // final UI
-    document.getElementById('ocText').textContent = `Thanks ${name}. Your order has been received and is under verification.`;
-    const ocItems = document.getElementById('ocItems'); ocItems.innerHTML=''; order.items.forEach(i=>{ const r=document.createElement('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.margin='6px 0'; r.innerHTML = `<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; ocItems.appendChild(r); });
-    showSection('order-complete');
-    // clear cart
-    cart = []; updateCartUI();
+/* categories */
+function buildCategories(){
+  const grid = $('#categoryGrid'); grid.innerHTML='';
+  Object.entries(STORE.categories).forEach(([key,meta])=>{
+    if(key==='kits') return;
+    const d = document.createElement('div'); d.className='cat';
+    d.innerHTML = `<img src="${meta.img||'images/hero-device.png'}" alt=""><h4>${meta.label||key}</h4><div style="color:var(--muted)">${(meta.products||[]).length} items</div>`;
+    d.addEventListener('click', ()=>{ $('#categoryFilter').value = key; location.hash = '#products'; applyAllFilters(); });
+    grid.appendChild(d);
   });
+}
 
-  // showStatus helper
-  function showStatus(txt, isError=false){ const s = document.getElementById('status'); s.innerHTML = `<div style="padding:10px;border-radius:8px;background:${isError?'#3b0f0f':'#072e12'};color:${isError?'#ffd2d2':'#b9f0c9'}">${txt}</div>`; }
+/* filters */
+function buildFilters(){
+  const sel = $('#categoryFilter'); sel.innerHTML = '<option value="all">All Categories</option>';
+  Object.entries(STORE.categories).forEach(([k,meta])=>{ if(k==='kits') return; const o = document.createElement('option'); o.value = k; o.textContent = meta.label || k; sel.appendChild(o); });
+}
+$('#applyFilters').addEventListener('click', ()=>{ applyAllFilters(); location.hash='#products'; });
+$('#searchInput').addEventListener('keyup', (e)=>{ if(e.key==='Enter') applyAllFilters(); });
 
-  // simple search utility for console testing
-  window._debug = { STORE, cart };
+function applyAllFilters(){
+  const cat = $('#categoryFilter').value;
+  const q = ($('#searchInput').value||'').toLowerCase().trim();
+  const lo = Number($('#minPrice').value)||0;
+  const hi = Number($('#maxPrice').value)||99999999;
+  const list = flattenProducts().filter(p=>{
+    return (cat==='all' || p.category===cat) && (+p.price)>=lo && (+p.price)<=hi && (q==='' || (p.name||'').toLowerCase().includes(q) || (p.description||'').toLowerCase().includes(q));
+  });
+  renderProducts(list);
+}
 
-  </script>
+/* render products & kits */
+const productsContainer = $('#productsContainer'), kitsContainer = $('#kitsContainer');
+function renderProducts(list){
+  productsContainer.innerHTML='';
+  if(!list || list.length===0){ productsContainer.innerHTML='<div style="padding:20px;color:var(--muted)">No products found.</div>'; return; }
+  list.forEach(p=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `<div class="product-img" style="background-image:url('${p.image||'images/hero-device.png'}')"></div>
+      <h3>${p.name}</h3>
+      <div style="color:var(--muted);font-size:.92rem">${p.description||''}</div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+        <div class="price">₹${(+p.price||0).toLocaleString('en-IN')}</div>
+        <div><button class="cart-btn add" data-id="${p.id}">Add</button></div>
+      </div>`;
+    productsContainer.appendChild(c);
+  });
+  bindAdd();
+}
+function renderKits(){
+  kitsContainer.innerHTML='';
+  const kits = (STORE.categories.kits?.products)||[];
+  kits.forEach(p=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `<div class="product-img" style="background-image:url('${p.image||'images/hero-device.png'}')"></div>
+      <h3>${p.name}</h3>
+      <div style="color:var(--muted);font-size:.92rem">${p.description||''}</div>
+      <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+        <div class="price">₹${(+p.price||0).toLocaleString('en-IN')}</div>
+        <div><button class="cart-btn add" data-id="${p.id}">Add</button></div>
+      </div>`;
+    kitsContainer.appendChild(c);
+  });
+  bindAdd();
+}
+
+/* add to cart + fly animation */
+function bindAdd(){
+  $all('.add').forEach(b=>{
+    b.onclick = (e)=>{
+      const id = e.currentTarget.dataset.id;
+      let prod=null;
+      for(const [k,m] of Object.entries(STORE.categories)){
+        const found = (m.products||[]).find(x=>String(x.id)===String(id));
+        if(found){ prod = found; break; }
+      }
+      if(!prod) return;
+      const existing = cart.find(i=>String(i.id)===String(prod.id));
+      if(existing) existing.qty += 1; else cart.push({ id: prod.id, name: prod.name, price: +prod.price, image: prod.image, qty: 1 });
+      saveCart();
+      animateAddToCart(e.currentTarget);
+      updateCartUI();
+      toast(`${prod.name} added to cart`);
+    };
+  });
+}
+
+function animateAddToCart(btn){
+  try{
+    const imgBox = btn.closest('.card').querySelector('.product-img');
+    const rect = imgBox.getBoundingClientRect();
+    const fly = imgBox.cloneNode(true);
+    fly.style.position='fixed'; fly.style.left = rect.left + 'px'; fly.style.top = rect.top + 'px'; fly.style.width = rect.width + 'px'; fly.style.height = rect.height + 'px'; fly.style.zIndex=9999; fly.style.borderRadius='12px'; fly.style.boxShadow='0 30px 50px rgba(0,0,0,0.6)';
+    document.body.appendChild(fly);
+    const cartBtn = document.getElementById('openCartBtn').getBoundingClientRect();
+    const endX = cartBtn.left + 20; const endY = cartBtn.top + 8;
+    fly.animate([{ transform:'translate(0,0) scale(1)', opacity:1 }, { transform:`translate(${endX-rect.left}px, ${endY-rect.top}px) scale(.18)`, opacity:0.2 }], { duration:700, easing:'cubic-bezier(.2,.8,.2,1)'});
+    setTimeout(()=>fly.remove(),720);
+  }catch(err){ /* ignore animation failures */ }
+}
+
+/* cart UI */
+function subtotal(){ return cart.reduce((s,i)=>s + i.price * i.qty, 0); }
+function computeCharge(delivery, payment, sub){ if(delivery==='pickup') return 0; if(payment==='cod') return 80; return (sub<1500)?50:0; }
+function updateCartUI(){
+  $('#cartCount').textContent = cart.reduce((t,i)=>t+i.qty,0);
+  const body = $('#cartBody'); if(!body) return;
+  body.innerHTML = '';
+  if(cart.length===0){ body.innerHTML = '<tr><td colspan="5" style="padding:20px;color:var(--muted)">Your cart is empty.</td></tr>'; } else {
+    let sub = 0;
+    cart.forEach(item=>{
+      sub += item.price * item.qty;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td style="display:flex;gap:10px;align-items:center"><div style="width:64px;height:64px;background:url('${item.image||'images/hero-device.png'}') center/cover;border-radius:8px"></div><div>${item.name}</div></td>
+        <td>₹${item.price.toLocaleString('en-IN')}</td>
+        <td><div class="qty-control" style="display:flex;align-items:center;gap:6px"><button class="qty-btn" data-id="${item.id}" data-d="-1">-</button><input class="qty-input" data-id="${item.id}" value="${item.qty}" style="width:48px;text-align:center;background:transparent;border:0;color:inherit"></div></td>
+        <td>₹${(item.price*item.qty).toLocaleString('en-IN')}</td>
+        <td><button class="cart-btn remove" data-id="${item.id}" style="background:transparent;border:1px solid rgba(255,255,255,0.04);color:#fff">Remove</button></td>`;
+      body.appendChild(tr);
+    });
+    $('#sumSubtotal').textContent = '₹'+sub.toLocaleString('en-IN');
+    $('#sumTotal').textContent = '₹'+sub.toLocaleString('en-IN');
+    // bind qty & remove
+    $all('.qty-btn').forEach(b=>b.onclick = (e)=>{ const id=e.currentTarget.dataset.id; const d = +e.currentTarget.dataset.d; const it = cart.find(x=>String(x.id)===String(id)); if(!it) return; it.qty += d; if(it.qty<=0) cart = cart.filter(x=>String(x.id)!==String(id)); saveCart(); updateCartUI(); });
+    $all('.qty-input').forEach(inp=>inp.onchange = (e)=>{ const id=e.currentTarget.dataset.id; const val = Math.max(1, parseInt(e.currentTarget.value||'1',10)); const it = cart.find(x=>String(x.id)===String(id)); if(it){ it.qty = val; saveCart(); updateCartUI(); }});
+    $all('.remove').forEach(btn=>btn.onclick = (e)=>{ const id=e.currentTarget.dataset.id; cart = cart.filter(x=>String(x.id)!==String(id)); saveCart(); updateCartUI(); });
+  }
+  // update summary on checkout if shown
+  updateSummary();
+}
+
+/* remove helper (global) */
+function removeItem(id){ cart = cart.filter(i=>String(i.id)!==String(id)); saveCart(); updateCartUI(); }
+
+/* router show/hide */
+const sections = ['home','categories','products','kits','cart','checkout','order-complete'];
+function showSection(id){ sections.forEach(s=>{ const el = document.getElementById(s); if(el) el.style.display = (s===id)?'block':'none'; }); // activate nav link
+  $all('.nav-link').forEach(a=> a.classList.toggle('active', a.getAttribute('href')===`#${id}`) );
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='cart') updateCartUI();
+  if(id==='checkout') updateSummary();
+}
+window.addEventListener('hashchange', ()=> showSection((location.hash||'#home').replace('#','')));
+if(!location.hash) location.hash = '#home'; showSection((location.hash||'#home').replace('#',''));
+
+/* open cart button */
+$('#openCartBtn').addEventListener('click', ()=>{ location.hash = '#cart'; });
+
+/* summary for checkout */
+function updateSummary(){
+  const sumItems = $('#sum2Subtotal'); if(!sumItems) return;
+  const sub = subtotal(); const ch = computeCharge($('#cDelivery')?.value || 'delivery', $('#cPayment')?.value || 'qr', sub);
+  $('#sum2Subtotal').textContent = '₹'+sub.toLocaleString('en-IN');
+  $('#sum2Charge').textContent = '₹'+ch;
+  $('#sum2Total').textContent = '₹'+(sub+ch).toLocaleString('en-IN');
+  const list = $('#summaryItems'); if(list){ list.innerHTML=''; cart.forEach(i=>{ const r = document.createElement('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.margin='6px 0'; r.innerHTML = `<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; list.appendChild(r); }); }
+}
+
+/* checkout flow -> PDF generation -> send to GAS or EmailJS or download fallback */
+function fileToDataUrl(file){ return new Promise((res,rej)=>{ const fr = new FileReader(); fr.onload = ()=> res(fr.result); fr.onerror = rej; fr.readAsDataURL(file); }); }
+
+async function generatePdf(order, screenshotDataUrl){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'pt', format:'a4' });
+  const margin = 40; let y = margin;
+  doc.setFontSize(16); doc.text('Creator Store — Invoice', margin, y); y+=22;
+  doc.setFontSize(11); doc.text(`Date: ${new Date().toLocaleString()}`, margin, y); y+=16;
+  doc.text(`Buyer: ${order.name}`, margin, y); y+=14; doc.text(`Email: ${order.email}`, margin, y); y+=14; doc.text(`Phone: ${order.phone}`, margin, y); y+=14; doc.text(`Address: ${order.address}`, margin, y); y+=18;
+  doc.text('Items:', margin, y); y+=12;
+  doc.setFont(undefined,'bold'); doc.text('Item', margin, y); doc.text('Qty', margin+320, y); doc.text('Price', margin+380, y); doc.setFont(undefined,'normal'); y+=12;
+  order.items.forEach(it=>{
+    doc.text(it.name, margin, y); doc.text(String(it.qty), margin+320, y); doc.text('₹'+String(it.price*it.qty), margin+380, y);
+    y+=14; if(y>700){ doc.addPage(); y=margin; }
+  });
+  y+=8; doc.text(`Subtotal: ₹${order.subtotal}`, margin, y); y+=14; doc.text(`Shipping/COD: ₹${order.charge}`, margin, y); y+=14; doc.text(`Grand total: ₹${order.grand}`, margin, y); y+=16;
+  doc.text(`UTR/Txn ID: ${order.utr}`, margin, y); y+=18;
+  if(screenshotDataUrl){
+    const imgProps = doc.getImageProperties(screenshotDataUrl);
+    const maxW = 480; const ratio = imgProps.width / imgProps.height; const iw = Math.min(maxW, imgProps.width); const ih = iw / ratio;
+    if(y + ih > 800){ doc.addPage(); y = margin; }
+    doc.text('Payment proof:', margin, y); y+=12;
+    doc.addImage(screenshotDataUrl, 'JPEG', margin, y, iw, ih); y+=ih+8;
+  }
+  doc.setFontSize(10); doc.text('Generated by Creator Store', margin, 780);
+  const blob = doc.output('blob');
+  const base64 = await new Promise(resolve=>{ const fr=new FileReader(); fr.onload = ()=> resolve(fr.result.split(',')[1]); fr.readAsDataURL(blob); });
+  return { blob, base64 };
+}
+
+/* send to Google Apps Script webhook (recommended) */
+async function sendToGAS(gasUrl, ownerEmail, buyerEmail, filename, base64, order){
+  const payload = { ownerEmail, buyerEmail, filename, fileBase64: base64, order };
+  const res = await fetch(gasUrl, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload) });
+  if(!res.ok) throw new Error('GAS responded with ' + res.status);
+  return res.json();
+}
+
+/* EmailJS fallback */
+async function sendViaEmailJS(owner, buyer, base64, order){
+  if(!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) throw new Error('EmailJS not configured');
+  if(!window.emailjs) throw new Error('EmailJS SDK not available');
+  emailjs.init(EMAILJS_USER_ID);
+  const params = { to_email: owner, buyer_email: buyer, attachment: base64, message: `UTR:${order.utr} Grand: ₹${order.grand}` };
+  return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+}
+
+/* submit checkout */
+$('#checkoutForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  // validations
+  const name = $('#cName').value.trim(); const email = $('#cEmail').value.trim(); const phone = $('#cPhone').value.trim(); const address = $('#cAddress').value.trim();
+  const delivery = $('#cDelivery').value; const payment = $('#cPayment').value; const utr = $('#utr').value.trim();
+  if(!name||!email||!phone||!address){ toast('Please fill required fields',2200); return; }
+  if(!/^\d{10}$/.test(phone)){ toast('Enter 10-digit phone',2200); return; }
+  const screenshotFile = document.getElementById('payScreenshot').files[0];
+  if(payment==='qr'){ if(!screenshotFile){ toast('Please upload payment screenshot',2200); return; } if(!utr){ toast('Please enter UTR / transaction id',2200); return; } }
+
+  const sub = subtotal(); const ch = computeCharge(delivery,payment,sub); const grand = sub + ch;
+  const order = { name, email, phone, address, delivery, payment, utr, items: cart.map(i=>({id:i.id, name:i.name, price:i.price, qty:i.qty})), subtotal: sub, charge: ch, grand };
+
+  let screenshotDataUrl = null;
+  if(screenshotFile){ try{ screenshotDataUrl = await fileToDataUrl(screenshotFile); } catch(err){ console.error(err); toast('Failed to read screenshot'); return; } }
+
+  toast('Generating invoice...');
+  let pdf;
+  try{ pdf = await generatePdf(order, screenshotDataUrl); } catch(err){ console.error(err); toast('Failed to generate invoice'); return; }
+
+  // send via GAS if configured
+  if(GAS_WEBHOOK_URL && GAS_WEBHOOK_URL.length>10){
+    toast('Sending invoice to store via Apps Script...');
+    try{
+      await sendToGAS(GAS_WEBHOOK_URL, OWNER_EMAIL, email, `invoice_${Date.now()}.pdf`, pdf.base64, order);
+      toast('Order received — confirmation sent',2400);
+    }catch(err){
+      console.error('GAS error', err);
+      toast('Apps Script failed — trying EmailJS fallback',2400);
+    }
+  }
+
+  // EmailJS fallback
+  if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && EMAILJS_USER_ID && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID){
+    toast('Sending invoice via EmailJS...');
+    try{ await sendViaEmailJS(OWNER_EMAIL, email, pdf.base64, order); toast('Order emailed via EmailJS',2200); } catch(err){ console.error('EmailJS failed', err); toast('EmailJS failed — downloading invoice for manual send',2400); const url = URL.createObjectURL(pdf.blob); const a=document.createElement('a'); a.href=url; a.download = `invoice_${Date.now()}.pdf`; a.click(); }
+  }
+
+  // if neither configured, download invoice
+  if((!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.length<10) && (!EMAILJS_USER_ID || !EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID)){
+    const url = URL.createObjectURL(pdf.blob); const a=document.createElement('a'); a.href=url; a.download = `invoice_${Date.now()}.pdf`; a.click();
+    toast('Invoice downloaded - please email it to the store', 3000);
+  }
+
+  // finalize UI
+  $('#ocItems').innerHTML = ''; order.items.forEach(i=>{ const r = document.createElement('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.margin='6px 0'; r.innerHTML = `<div>${i.name} × ${i.qty}</div><div>₹${(i.price*i.qty).toLocaleString('en-IN')}</div>`; $('#ocItems').appendChild(r);});
+  showSection('order-complete');
+  // attach download button
+  $('#downloadInvoice').onclick = ()=>{ const url = URL.createObjectURL(pdf.blob); const a = document.createElement('a'); a.href=url; a.download = `invoice_${Date.now()}.pdf`; a.click(); };
+  // clear cart
+  cart = []; saveCart(); updateCartUI();
+});
+
+/* small helpers to keep UI live */
+$('#cDelivery')?.addEventListener('change', updateSummary);
+$('#cPayment')?.addEventListener('change', updateSummary);
+
+/* quick debug */
+window._store = () => ({ STORE, cart });
+
+</script>
 </body>
 </html>

@@ -5,228 +5,80 @@
       "label": "Microcontrollers",
       "img": "images/microcontrollers.jpg",
       "products": [
-        {
-          "id": 101,
-          "name": "Arduino UNO R3 (Original)",
-          "price": 1799,
-          "image": "images/arduino uno.jpg",
-          "badge": "Bestseller",
-          "description": "ATmega328P based dev board"
-        },
-        {
-          "id": 102,
-          "name": "Arduino Nano (Clone)",
-          "price": 249,
-          "image": "images/arduino nano.jpg",
-          "description": "Compact 5V/16MHz board"
-        },
-        {
-          "id": 103,
-          "name": "Arduino Nano (Clone) without solder",
-          "price": 249,
-          "image": "images/nano without solder.jpg",
-          "description": "Compact 5V/16MHz board"
-        },
-        {
-          "id": 104,
-          "name": "Raspberry 4 Model B 4GB",
-          "price": 9000,
-          "image": "images/RP4 4GB.jpg",
-          "description": "RP2040 dual-core MCU"
-        }
+        { "id": 101, "name": "Arduino UNO R3 (Original)", "price": 1799, "image": "images/arduino-uno.jpg", "badge": "Bestseller", "description": "ATmega328P based dev board" },
+        { "id": 102, "name": "Arduino Nano (Clone)", "price": 249, "image": "images/arduino-nano.jpg", "description": "Compact 5V/16MHz board" },
+        { "id": 103, "name": "Raspberry Pi Pico", "price": 399, "image": "images/rpi-pico.jpg", "description": "RP2040 dual-core MCU" }
       ]
     },
     "sensors": {
       "label": "Sensors",
       "img": "images/sensors.jpg",
       "products": [
-        {
-          "id": 201,
-          "name": "DHT22 Temp & Humidity",
-          "price": 190,
-          "image": "images/dht22.jpg"
-        },
-        {
-          "id": 202,
-          "name": "HC-SR04 Ultrasonic",
-          "price": 99,
-          "image": "images/hcsr04.jpg"
-        },
-        {
-          "id": 203,
-          "name": "MPU6050 6-DOF",
-          "price": 120,
-          "image": "images/mpu6050.jpg"
-        }
+        { "id": 201, "name": "DHT22 Temp & Humidity", "price": 190, "image": "images/dht22.jpg" },
+        { "id": 202, "name": "HC-SR04 Ultrasonic", "price": 99, "image": "images/hcsr04.jpg" },
+        { "id": 203, "name": "MPU6050 6-DOF", "price": 120, "image": "images/mpu6050.jpg" }
       ]
     },
     "development_boards": {
       "label": "Development Boards",
       "img": "images/dev-boards.jpg",
       "products": [
-        {
-          "id": 301,
-          "name": "ESP32 DevKit V1 (WROOM)",
-          "price": 349,
-          "image": "images/esp32 30 pin.jpg"
-        },
-        {
-          "id": 302,
-          "name": "STM32F103C8T6 Blue Pill",
-          "price": 279,
-          "image": "images/bluepill.jpg"
-        },
-        {
-          "id": 303,
-          "name": "ESP32",
-          "price": 390,
-          "image": "images/esp32 38pin.jpg"
-        }
+        { "id": 301, "name": "ESP32 DevKit V1 (WROOM)", "price": 349, "image": "images/esp32.jpg" },
+        { "id": 302, "name": "STM32F103C8T6 Blue Pill", "price": 279, "image": "images/bluepill.jpg" },
+        { "id": 303, "name": "ESP8266 NodeMCU v3", "price": 249, "image": "images/nodemcu.jpg" }
       ]
     },
     "active": {
       "label": "Active Components",
       "img": "images/active.jpg",
       "products": [
-        {
-          "id": 401,
-          "name": "L298N Motor Driver",
-          "price": 149,
-          "image": "images/l298n.jpg"
-        },
-        {
-          "id": 402,
-          "name": "A4988 Stepper Driver",
-          "price": 89,
-          "image": "images/a4988.jpg"
-        },
-        {
-          "id": 403,
-          "name": "ULN2003 Darlington Array",
-          "price": 49,
-          "image": "images/uln2003.jpg"
-        }
+        { "id": 401, "name": "L298N Motor Driver", "price": 149, "image": "images/l298n.jpg" },
+        { "id": 402, "name": "A4988 Stepper Driver", "price": 89, "image": "images/a4988.jpg" },
+        { "id": 403, "name": "ULN2003 Darlington Array", "price": 49, "image": "images/uln2003.jpg" }
       ]
     },
     "passive": {
       "label": "Passive Components",
       "img": "images/passive.jpg",
       "products": [
-        {
-          "id": 501,
-          "name": "Resistor Kit 1/4W (600pcs)",
-          "price": 129,
-          "image": "images/resistor-kit.jpg"
-        },
-        {
-          "id": 502,
-          "name": "Capacitor Assortment 120pcs",
-          "price": 149,
-          "image": "images/capacitors.jpg"
-        },
-        {
-          "id": 503,
-          "name": "Inductor Assortment",
-          "price": 179,
-          "image": "images/inductors.jpg"
-        }
+        { "id": 501, "name": "Resistor Kit 1/4W (600pcs)", "price": 129, "image": "images/resistor-kit.jpg" },
+        { "id": 502, "name": "Capacitor Assortment 120pcs", "price": 149, "image": "images/capacitors.jpg" },
+        { "id": 503, "name": "Inductor Assortment", "price": 179, "image": "images/inductors.jpg" }
       ]
     },
     "power": {
       "label": "Power Components",
       "img": "images/power.jpg",
       "products": [
-        {
-          "id": 601,
-          "name": "LM7805 Regulator",
-          "price": 25,
-          "image": "images/lm7805.jpg"
-        },
-        {
-          "id": 602,
-          "name": "LM2596 Buck Module",
-          "price": 99,
-          "image": "images/lm2596.jpg"
-        },
-        {
-          "id": 603,
-          "name": "MOSFET IRLZ44N",
-          "price": 65,
-          "image": "images/irlz44n.jpg"
-        }
+        { "id": 601, "name": "LM7805 Regulator", "price": 25, "image": "images/lm7805.jpg" },
+        { "id": 602, "name": "LM2596 Buck Module", "price": 99, "image": "images/lm2596.jpg" },
+        { "id": 603, "name": "MOSFET IRLZ44N", "price": 65, "image": "images/irlz44n.jpg" }
       ]
     },
     "tools": {
       "label": "Tools",
       "img": "images/tools.jpg",
       "products": [
-        {
-          "id": 701,
-          "name": "Soldering Iron 60W",
-          "price": 299,
-          "image": "images/solder-iron.jpg"
-        },
-        {
-          "id": 702,
-          "name": "Digital Multimeter",
-          "price": 499,
-          "image": "images/multimeter.jpg"
-        },
-        {
-          "id": 703,
-          "name": "Solder Wire 60/40 100g",
-          "price": 129,
-          "image": "images/solder-wire.jpg"
-        }
+        { "id": 701, "name": "Soldering Iron 60W", "price": 299, "image": "images/solder-iron.jpg" },
+        { "id": 702, "name": "Digital Multimeter", "price": 499, "image": "images/multimeter.jpg" },
+        { "id": 703, "name": "Solder Wire 60/40 100g", "price": 129, "image": "images/solder-wire.jpg" }
       ]
     },
     "modules": {
       "label": "Communication Modules",
       "img": "images/modules.jpg",
       "products": [
-        {
-          "id": 801,
-          "name": "HC-05 Bluetooth",
-          "price": 220,
-          "image": "images/hc05.jpg"
-        },
-        {
-          "id": 802,
-          "name": "NRF24L01+ 2.4GHz",
-          "price": 90,
-          "image": "images/nrf24l01.jpg"
-        },
-         {
-          "id": 803,
-          "name": "NRF24L01+ 2.4GHz with External Antenna",
-          "price": 160,
-          "image": "images/nrf with ext antenna.jpg"
-        },
-        {
-          "id": 804,
-          "name": "ESP32 S2 mini",
-          "price": 300,
-          "image": "images/esp32 s2.jpg"
-        }
+        { "id": 801, "name": "HC-05 Bluetooth", "price": 220, "image": "images/hc05.jpg" },
+        { "id": 802, "name": "NRF24L01+ 2.4GHz", "price": 120, "image": "images/nrf24l01.jpg" },
+        { "id": 803, "name": "ESP-01 WiFi", "price": 129, "image": "images/esp01.jpg" }
       ]
     },
     "kits": {
       "label": "Kits",
       "img": "images/kits.jpg",
       "products": [
-        {
-          "id": "k1",
-          "name": "Line Follower Robot Kit",
-          "price": 1299,
-          "image": "images/kit-line-follower.jpg",
-          "badge": "Popular"
-        },
-        {
-          "id": "k2",
-          "name": "Smart Home Starter Kit",
-          "price": 1899,
-          "image": "images/kit-smart-home.jpg"
-        }
+        { "id": "k1", "name": "Line Follower Robot Kit", "price": 1299, "image": "images/kit-line-follower.jpg", "badge": "Popular" },
+        { "id": "k2", "name": "Smart Home Starter Kit", "price": 1899, "image": "images/kit-smart-home.jpg" }
       ]
     }
   }

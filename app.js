@@ -968,8 +968,8 @@ function togglePolicy(element) {
     }
 
     function postOrderToAppsScript(order){
-      var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz3V6ysAHM9Vx_Gn2ADLXRPLLJChwBpt-HO-PTDCEyWq2T-uGBTmwY_K-nK1HrNOY6-6w/exec';
-      var SECRET = '9f3d7f2b-1c6a-4f9e-a2b5-8b2d9c6f3e7a';
+      var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOY_ID/exec';
+      var SECRET = 'REPLACE_WITH_SECRET';
       var payload = { secret: SECRET, order: order };
       fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -983,4 +983,80 @@ function togglePolicy(element) {
     }
 
   }); // onReady
+})();
+
+
+/* === WHATSAPP PROCEED HANDLER (clean version) === */
+(function(){
+  function onReady(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  onReady(function(){
+    var proceedBtn = document.querySelector('#proceed-btn') || document.querySelector('[data-proceed]') || document.querySelector('.proceed') || document.querySelector('button.proceed');
+    function attach(el){
+      if(!el) return;
+      el.addEventListener('click', function(e){ e.preventDefault(); handleProceed(el); });
+    }
+    if(proceedBtn) attach(proceedBtn);
+    else {
+      document.addEventListener('click', function(e){
+        var t = e.target;
+        if(t && (t.matches('[data-proceed]') || t.matches('.proceed') || t.id === 'proceed-btn')){
+          e.preventDefault();
+          handleProceed(t);
+        }
+      });
+    }
+
+    function handleProceed(btn){
+      try {
+        var buyerName = (document.querySelector('#buyer-name') && document.querySelector('#buyer-name').value) ||
+                        (document.querySelector('[name="name"]') && document.querySelector('[name="name"]').value) || 'Customer';
+        var buyerEmail = (document.querySelector('#buyer-email') && document.querySelector('#buyer-email').value) ||
+                         (document.querySelector('[name="email"]') && document.querySelector('[name="email"]').value) || '';
+        var paymentMethod = (document.querySelector('input[name="paymentMethod"]:checked') && document.querySelector('input[name="paymentMethod"]:checked').value) ||
+                            (document.querySelector('#payment-method') && document.querySelector('#payment-method').value) || 'unknown';
+        var screenshotInput = document.querySelector('input[type="file"][name="payment_screenshot"]') || document.querySelector('input[type="file"].payment_screenshot');
+        var screenshotName = '';
+        if(screenshotInput && screenshotInput.files && screenshotInput.files.length>0){
+          screenshotName = screenshotInput.files[0].name;
+        }
+
+        var orderItems = window.cartItems || window.orderItems || (window.currentOrder && window.currentOrder.items) || [];
+        var itemsText = '';
+        if(Array.isArray(orderItems) && orderItems.length){
+          orderItems.forEach(function(it, idx){
+            var nm = it.name || it.title || it.product || 'item';
+            var qty = it.qty || it.quantity || 1;
+            var price = it.price || it.amount || '';
+            itemsText += (idx+1) + '. ' + nm + ' x' + qty + (price ? ' (₹'+price+')' : '') + '\n';
+          });
+        } else {
+          var cartSummary = document.querySelector('.cart-summary') || document.querySelector('#cart-summary');
+          if(cartSummary) itemsText = cartSummary.innerText.trim();
+        }
+
+        var orderId = 'ORD-' + Math.floor(Math.random()*900000 + 100000);
+        var total = (window.cartTotal !== undefined) ? window.cartTotal : (window.totalAmount || '');
+
+        var finalText = 'Order ID: ' + orderId + '\n' +
+                        'Name: ' + buyerName + '\n' +
+                        (buyerEmail? ('Email: ' + buyerEmail + '\n') : '') +
+                        'Payment method: ' + paymentMethod + '\n' +
+                        (total ? ('Total: ₹' + total + '\n') : '') +
+                        '\nItems:\n' + (itemsText || '- no items listed') + '\n' +
+                        '\nPayment screenshot filename: ' + (screenshotName || 'none') + '\n\n' +
+                        'Please confirm this order.';
+
+        var preview = 'Order ID: ' + orderId + '\nName: ' + buyerName + (total? ('\nTotal: ₹' + total): '') + '\n\nOpen WhatsApp to send?';
+        if(window.confirm(preview)){
+          var waMessage = encodeURIComponent(finalText);
+          var waUrl = 'https://wa.me/{number}?text=' + waMessage;
+          waUrl = waUrl.replace('{number}', '916363870965');
+          window.open(waUrl, '_blank');
+        }
+      } catch(err){
+        console.error('WhatsApp proceed error', err);
+        alert('An error occurred preparing the WhatsApp message. Please try again.');
+      }
+    }
+  });
 })();

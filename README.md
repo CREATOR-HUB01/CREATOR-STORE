@@ -58,11 +58,3 @@ Check that your repository has these files at the root:
 
 Your website should be live at: `https://yourusername.github.io/repository-name/`
 
-
-
-# Contact form setup
-1. Apps Script deployed at: https://script.google.com/macros/s/AKfycbyih5_cKug0reBvJNNObqu3TI1BA22R1OMq6JiDdeQ2ElDWVOMR5X0y3oeHeosHNnhiTg/exec
-2. Ensure Project Properties in Apps Script include:
-   CONTACT_SECRET = 9f3d7f2b-1c6a-4f9e-a2b5-8b2d9c6f3e7a
-   OWNER_EMAIL = your-email@example.com
-3. Upload these files to your repo root and publish via GitHub Pages.
